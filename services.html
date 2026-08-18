@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>บริการ | สมุดบัญชี & ภาษี</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@400;600;700&family=Noto+Sans+Thai:wght@400;500;600&family=Courier+Prime&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html">
+      <span class="mark">ภธ</span>
+      สมุดบัญชี &amp; ภาษี
+    </a>
+    <nav class="links" id="navLinks">
+      <a href="index.html">หน้าแรก</a><a href="aboutus.html">เกี่ยวกับเรา</a><a class="current" href="services.html">บริการ</a><a href="blog.html">บทความ</a><a href="contactus.html">ติดต่อเรา</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="เปิดเมนู" aria-expanded="false">☰</button>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="eyebrow">บริการของเรา</div>
+  <h1 class="hero-title">บริการบัญชีและภาษีครบวงจร</h1>
+  <p class="hero-sub">ตั้งแต่จดทะเบียนธุรกิจ จัดทำบัญชี ยื่นภาษี ไปจนถึงปิดงบการเงิน เราดูแลให้ครบในที่เดียว</p>
+</section>
+<div class="services-grid">
+  <div class="service-card"><div class="num">01</div><h4>จดทะเบียนธุรกิจ</h4><p>จดทะเบียนบริษัท ห้างหุ้นส่วน และขึ้นทะเบียนภาษีมูลค่าเพิ่ม พร้อมให้คำแนะนำโครงสร้างที่เหมาะสม</p></div>
+  <div class="service-card"><div class="num">02</div><h4>จัดทำบัญชีรายเดือน</h4><p>บันทึกบัญชี กระทบยอดธนาคาร และจัดทำรายงานทางการเงินให้ถูกต้องทุกเดือน</p></div>
+  <div class="service-card"><div class="num">03</div><h4>ยื่นแบบภาษีทุกประเภท</h4><p>ดูแลการยื่นภ.พ.30 ภ.ง.ด.1 ภ.ง.ด.3 ภ.ง.ด.51 และภ.ง.ด.50 ให้ทันกำหนดเวลาทุกครั้ง</p></div>
+  <div class="service-card"><div class="num">04</div><h4>ปิดงบการเงินประจำปี</h4><p>จัดทำงบการเงินและประสานงานผู้สอบบัญชีรับอนุญาต ยื่นงบต่อกรมพัฒนาธุรกิจการค้า</p></div>
+  <div class="service-card"><div class="num">05</div><h4>จัดทำเงินเดือนและประกันสังคม</h4><p>คำนวณเงินเดือน ภาษีหัก ณ ที่จ่าย และนำส่งประกันสังคมให้พนักงานตรงเวลา</p></div>
+  <div class="service-card"><div class="num">06</div><h4>วางแผนภาษีล่วงหน้า</h4><p>วิเคราะห์โครงสร้างธุรกิจเพื่อวางแผนภาษีอย่างถูกต้องและใช้สิทธิประโยชน์ได้เต็มที่</p></div>
+</div>
+<footer class="site">
+  <div class="footer-wrap">
+    <div>
+      <h5>สมุดบัญชี &amp; ภาษี</h5>
+      <p>ที่ปรึกษาบัญชี ภาษี และงานทะเบียนธุรกิจ ดูแลผู้ประกอบการให้ปฏิบัติตามกฎหมายได้อย่างมั่นใจ ตั้งแต่จดทะเบียนจนถึงปิดงบการเงิน</p>
+    </div>
+    <div>
+      <h5>เมนู</h5>
+      <ul>
+        <li><a href="index.html">หน้าแรก</a></li>
+        <li><a href="aboutus.html">เกี่ยวกับเรา</a></li>
+        <li><a href="services.html">บริการ</a></li>
+        <li><a href="blog.html">บทความ</a></li>
+        <li><a href="contactus.html">ติดต่อเรา</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>ติดต่อ</h5>
+      <ul>
+        <li>โทร. 02-XXX-XXXX</li>
+        <li>อีเมล info@example.co.th</li>
+        <li>จันทร์–ศุกร์ 09:00–18:00 น.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2569 สมุดบัญชี &amp; ภาษี. สงวนลิขสิทธิ์.</span>
+    <span>ออกแบบและพัฒนาเว็บไซต์</span>
+  </div>
+</footer>
+<script>
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>ติดต่อเรา | สมุดบัญชี & ภาษี</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@400;600;700&family=Noto+Sans+Thai:wght@400;500;600&family=Courier+Prime&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html">
+      <span class="mark">ภธ</span>
+      สมุดบัญชี &amp; ภาษี
+    </a>
+    <nav class="links" id="navLinks">
+      <a href="index.html">หน้าแรก</a><a href="aboutus.html">เกี่ยวกับเรา</a><a href="services.html">บริการ</a><a href="blog.html">บทความ</a><a class="current" href="contactus.html">ติดต่อเรา</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="เปิดเมนู" aria-expanded="false">☰</button>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="eyebrow">ติดต่อเรา</div>
+  <h1 class="hero-title">พร้อมให้คำปรึกษาเรื่องบัญชีและภาษี</h1>
+  <p class="hero-sub">ทิ้งข้อความไว้ ทีมงานของเราจะติดต่อกลับภายใน 1 วันทำการ หรือโทรหาเราได้โดยตรงในเวลาทำการ</p>
+</section>
+<div class="contact-wrap">
+  <div class="contact-info">
+    <h4>ข้อมูลติดต่อ</h4>
+    <div class="item"><div class="k">โทรศัพท์</div><div class="v">02-XXX-XXXX</div></div>
+    <div class="item"><div class="k">อีเมล</div><div class="v">info@example.co.th</div></div>
+    <div class="item"><div class="k">เวลาทำการ</div><div class="v">จันทร์–ศุกร์ 09:00–18:00 น.</div></div>
+    <div class="item"><div class="k">ที่อยู่</div><div class="v">กรุงเทพมหานคร ประเทศไทย</div></div>
+  </div>
+  <form class="contact-form" onsubmit="event.preventDefault(); alert('ขอบคุณสำหรับข้อความ ทีมงานจะติดต่อกลับโดยเร็วที่สุด');">
+    <div class="field"><label for="name">ชื่อ-นามสกุล</label><input id="name" type="text" required></div>
+    <div class="field"><label for="email">อีเมล</label><input id="email" type="email" required></div>
+    <div class="field"><label for="phone">เบอร์โทรศัพท์</label><input id="phone" type="tel"></div>
+    <div class="field"><label for="msg">ข้อความ</label><textarea id="msg" required></textarea></div>
+    <button class="btn btn-primary" type="submit">ส่งข้อความ</button>
+    <p class="form-note">ฟอร์มนี้เป็นตัวอย่างสำหรับเดโม ยังไม่เชื่อมต่อระบบส่งอีเมลจริง</p>
+  </form>
+</div>
+<footer class="site">
+  <div class="footer-wrap">
+    <div>
+      <h5>สมุดบัญชี &amp; ภาษี</h5>
+      <p>ที่ปรึกษาบัญชี ภาษี และงานทะเบียนธุรกิจ ดูแลผู้ประกอบการให้ปฏิบัติตามกฎหมายได้อย่างมั่นใจ ตั้งแต่จดทะเบียนจนถึงปิดงบการเงิน</p>
+    </div>
+    <div>
+      <h5>เมนู</h5>
+      <ul>
+        <li><a href="index.html">หน้าแรก</a></li>
+        <li><a href="aboutus.html">เกี่ยวกับเรา</a></li>
+        <li><a href="services.html">บริการ</a></li>
+        <li><a href="blog.html">บทความ</a></li>
+        <li><a href="contactus.html">ติดต่อเรา</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>ติดต่อ</h5>
+      <ul>
+        <li>โทร. 02-XXX-XXXX</li>
+        <li>อีเมล info@example.co.th</li>
+        <li>จันทร์–ศุกร์ 09:00–18:00 น.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2569 สมุดบัญชี &amp; ภาษี. สงวนลิขสิทธิ์.</span>
+    <span>ออกแบบและพัฒนาเว็บไซต์</span>
+  </div>
+</footer>
+<script>
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen);
+  });
+</script>
+</body>
+</html>
