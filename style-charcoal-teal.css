@@ -1,11 +1,11 @@
 :root{
-    --ink:#2C6E91;
-    --ink-soft:#5B93B3;
-    --paper:#EDF6FB;
-    --paper-line:#D7E9F4;
-    --seal:#C97B2E;
-    --brass:#D4A24C;
-    --charcoal:#1F2B33;
+    --ink:#262B2E;
+    --ink-soft:#4B5358;
+    --paper:#F1F3F2;
+    --paper-line:#DCE2DF;
+    --seal:#2E6F64;
+    --brass:#7FA69B;
+    --charcoal:#20242A;
     --white:#FFFFFF;
   }
   *{box-sizing:border-box;}

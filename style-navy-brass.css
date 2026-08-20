@@ -1,12 +1,12 @@
 :root{
-    --ink:#2C6E91;
-    --ink-soft:#5B93B3;
-    --paper:#EDF6FB;
-    --paper-line:#D7E9F4;
-    --seal:#C97B2E;
-    --brass:#D4A24C;
-    --charcoal:#1F2B33;
-    --white:#FFFFFF;
+    --ink:#1F2A44;
+    --ink-soft:#3A4664;
+    --paper:#F7F3EA;
+    --paper-line:#E4DCC8;
+    --seal:#A63D40;
+    --brass:#B08D57;
+    --charcoal:#2B2B2B;
+    --white:#FFFDF8;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth; -webkit-text-size-adjust:100%;}

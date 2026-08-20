@@ -1,15 +1,15 @@
 :root{
-    --ink:#2C6E91;
-    --ink-soft:#5B93B3;
-    --paper:#EDF6FB;
-    --paper-line:#D7E9F4;
-    --seal:#C97B2E;
-    --brass:#D4A24C;
-    --charcoal:#1F2B33;
-    --white:#FFFFFF;
+    --ink:#1F2A44;
+    --ink-soft:#3A4664;
+    --paper:#F7F3EA;
+    --paper-line:#E4DCC8;
+    --seal:#A63D40;
+    --brass:#B08D57;
+    --charcoal:#2B2B2B;
+    --white:#FFFDF8;
   }
   *{box-sizing:border-box;}
-  html{scroll-behavior:smooth; -webkit-text-size-adjust:100%;}
+  html{scroll-behavior:smooth;}
   body{
     margin:0;
     background:var(--paper);
@@ -17,11 +17,7 @@
     font-family:'Noto Sans Thai','Noto Sans',sans-serif;
     background-image:
       repeating-linear-gradient(transparent, transparent 38px, var(--paper-line) 39px);
-    overflow-wrap:break-word;
-    word-break:break-word;
   }
-  img, svg{max-width:100%; display:block;}
-  table{max-width:100%; display:block; overflow-x:auto;}
   @media (prefers-reduced-motion: reduce){
     *{animation:none !important; transition:none !important;}
   }
@@ -41,23 +37,20 @@
   .nav-wrap{
     max-width:1180px;
     margin:0 auto;
-    padding:0 20px;
+    padding:0 24px;
     display:flex;
     align-items:center;
     justify-content:space-between;
     height:74px;
-    gap:12px;
   }
   .brand{
     display:flex;
     align-items:center;
-    gap:10px;
+    gap:12px;
     font-family:'Noto Serif Thai',serif;
     font-weight:700;
-    font-size:clamp(.95rem, 3.6vw, 1.25rem);
+    font-size:1.25rem;
     letter-spacing:.02em;
-    white-space:nowrap;
-    min-width:0;
   }
   .brand .mark{
     width:36px;height:36px;
@@ -68,11 +61,6 @@
     font-size:.85rem;
     color:var(--brass);
     flex-shrink:0;
-  }
-  .brand .brand-text{
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
   }
   nav.links{
     display:flex;

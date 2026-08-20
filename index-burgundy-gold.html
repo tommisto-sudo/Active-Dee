@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>หน้าแรก | Active Dee Consult</title>
+<title>หน้าแรก | สมุดบัญชี & ภาษี</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@400;600;700&family=Noto+Sans+Thai:wght@400;500;600&family=Courier+Prime&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style-burgundy-gold.css">
 </head>
 <body>
 <header class="site">
   <div class="nav-wrap">
     <a class="brand" href="index.html">
-      <span class="mark">AD</span>
-      Active Dee Consult
+      <span class="mark">A</span>
+      Active Dee Consult Co., Ltd.
     </a>
     <nav class="links" id="navLinks">
       <a class="current" href="index.html">หน้าแรก</a><a href="aboutus.html">เกี่ยวกับเรา</a><a href="services.html">บริการ</a><a href="blog.html">บทความ</a><a href="contactus.html">ติดต่อเรา</a>
@@ -68,19 +68,10 @@
   <a href="blog.html" class="count">อ่านทั้งหมด →</a>
 </div>
 <div class="grid" id="homeCardGrid"></div>
-
-<div class="section-head">
-  <h3>ข่าวล่าสุดจากกรมสรรพากร</h3>
-  <span class="count" id="rdNewsCount">อัปเดตอัตโนมัติ</span>
-</div>
-<div class="grid" id="rdNewsGrid">
-  <p style="grid-column:1/-1; color:var(--ink-soft); font-size:.9rem;" id="rdNewsLoading">กำลังโหลดข่าวล่าสุด...</p>
-</div>
-
 <footer class="site">
   <div class="footer-wrap">
     <div>
-      <h5>Active Dee Consult</h5>
+      <h5>สมุดบัญชี &amp; ภาษี</h5>
       <p>ที่ปรึกษาบัญชี ภาษี และงานทะเบียนธุรกิจ ดูแลผู้ประกอบการให้ปฏิบัติตามกฎหมายได้อย่างมั่นใจ ตั้งแต่จดทะเบียนจนถึงปิดงบการเงิน</p>
     </div>
     <div>
@@ -103,7 +94,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2569 Active Dee Consult Co., Ltd. สงวนลิขสิทธิ์.</span>
+    <span>© 2569 สมุดบัญชี &amp; ภาษี. สงวนลิขสิทธิ์.</span>
     <span>ออกแบบและพัฒนาเว็บไซต์</span>
   </div>
 </footer>
@@ -135,53 +126,6 @@
       </div>
     </article>
   `).join('');
-</script>
-<script>
-  // ที่อยู่ของ Backend API — เปลี่ยนเป็น URL จริงตอน deploy (เช่น https://api.yourdomain.co.th)
-  const RD_NEWS_API_URL = "http://localhost:5000/api/rd-news?limit=4";
-
-  async function loadRdNews() {
-    const grid = document.getElementById('rdNewsGrid');
-    const countEl = document.getElementById('rdNewsCount');
-    try {
-      const res = await fetch(RD_NEWS_API_URL);
-      const data = await res.json();
-      if (!res.ok || !data.ok || !data.items || !data.items.length) {
-        throw new Error('no data');
-      }
-
-      grid.innerHTML = data.items.map(item => {
-        const parts = (item.date || '').split(' '); // ["17", "ส.ค.", "2569"]
-        const day = parts[0] || '';
-        const mon = parts[1] || '';
-        return `
-        <article class="card">
-          <div class="card-top">
-            <svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg">
-              <line x1="0" y1="25" x2="300" y2="25" stroke="#F7F3EA" stroke-width="1"/>
-              <line x1="0" y1="55" x2="300" y2="55" stroke="#F7F3EA" stroke-width="1"/>
-              <line x1="0" y1="85" x2="300" y2="85" stroke="#F7F3EA" stroke-width="1"/>
-              <line x1="0" y1="115" x2="300" y2="115" stroke="#F7F3EA" stroke-width="1"/>
-            </svg>
-            <div class="stamp"><span class="day">${day}</span><span class="mon">${mon}</span></div>
-          </div>
-          <div class="card-body">
-            <div class="card-cat">ข่าวประชาสัมพันธ์ · กรมสรรพากร</div>
-            <h4>${item.title}</h4>
-            <p class="excerpt">${item.excerpt}</p>
-            <div class="byline">rd.go.th <span class="dot"></span> ${item.date}</div>
-            <a class="read-more" href="${item.link}" target="_blank" rel="noopener">อ่านต่อ <span>→</span></a>
-          </div>
-        </article>`;
-      }).join('');
-
-      countEl.textContent = data.stale ? "ข้อมูลล่าสุดที่มี (เชื่อมต่อใหม่ไม่สำเร็จชั่วคราว)" : "ดึงข้อมูลสดจาก rd.go.th";
-    } catch (err) {
-      grid.innerHTML = `<p style="grid-column:1/-1; color:var(--ink-soft); font-size:.9rem;">ไม่สามารถโหลดข่าวจากกรมสรรพากรได้ในขณะนี้ กรุณาลองใหม่ภายหลัง</p>`;
-      countEl.textContent = "";
-    }
-  }
-  loadRdNews();
 </script>
 </body>
 </html>
