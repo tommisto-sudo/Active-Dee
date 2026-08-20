@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>ติดต่อเรา | สมุดบัญชี & ภาษี</title>
+<title>ติดต่อเรา | Active Dee Consult</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@400;600;700&family=Noto+Sans+Thai:wght@400;500;600&family=Courier+Prime&display=swap" rel="stylesheet">
@@ -13,8 +13,8 @@
 <header class="site">
   <div class="nav-wrap">
     <a class="brand" href="index.html">
-      <span class="mark">ภธ</span>
-      สมุดบัญชี &amp; ภาษี
+      <span class="mark">AD</span>
+      Active Dee Consult
     </a>
     <nav class="links" id="navLinks">
       <a href="index.html">หน้าแรก</a><a href="aboutus.html">เกี่ยวกับเรา</a><a href="services.html">บริการ</a><a href="blog.html">บทความ</a><a class="current" href="contactus.html">ติดต่อเรา</a>
@@ -36,19 +36,19 @@
     <div class="item"><div class="k">เวลาทำการ</div><div class="v">จันทร์–ศุกร์ 09:00–18:00 น.</div></div>
     <div class="item"><div class="k">ที่อยู่</div><div class="v">กรุงเทพมหานคร ประเทศไทย</div></div>
   </div>
-  <form class="contact-form" onsubmit="event.preventDefault(); alert('ขอบคุณสำหรับข้อความ ทีมงานจะติดต่อกลับโดยเร็วที่สุด');">
-    <div class="field"><label for="name">ชื่อ-นามสกุล</label><input id="name" type="text" required></div>
-    <div class="field"><label for="email">อีเมล</label><input id="email" type="email" required></div>
-    <div class="field"><label for="phone">เบอร์โทรศัพท์</label><input id="phone" type="tel"></div>
-    <div class="field"><label for="msg">ข้อความ</label><textarea id="msg" required></textarea></div>
-    <button class="btn btn-primary" type="submit">ส่งข้อความ</button>
-    <p class="form-note">ฟอร์มนี้เป็นตัวอย่างสำหรับเดโม ยังไม่เชื่อมต่อระบบส่งอีเมลจริง</p>
+  <form class="contact-form" id="contactForm">
+    <div class="field"><label for="name">ชื่อ-นามสกุล</label><input id="name" name="name" type="text" required></div>
+    <div class="field"><label for="email">อีเมล</label><input id="email" name="email" type="email" required></div>
+    <div class="field"><label for="phone">เบอร์โทรศัพท์</label><input id="phone" name="phone" type="tel"></div>
+    <div class="field"><label for="msg">ข้อความ</label><textarea id="msg" name="message" required></textarea></div>
+    <button class="btn btn-primary" type="submit" id="contactSubmit">ส่งข้อความ</button>
+    <p class="form-note" id="contactStatus">กรอกข้อมูลแล้วกดส่ง ทีมงานจะได้รับข้อความทันที</p>
   </form>
 </div>
 <footer class="site">
   <div class="footer-wrap">
     <div>
-      <h5>สมุดบัญชี &amp; ภาษี</h5>
+      <h5>Active Dee Consult</h5>
       <p>ที่ปรึกษาบัญชี ภาษี และงานทะเบียนธุรกิจ ดูแลผู้ประกอบการให้ปฏิบัติตามกฎหมายได้อย่างมั่นใจ ตั้งแต่จดทะเบียนจนถึงปิดงบการเงิน</p>
     </div>
     <div>
@@ -71,7 +71,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2569 สมุดบัญชี &amp; ภาษี. สงวนลิขสิทธิ์.</span>
+    <span>© 2569 Active Dee Consult Co., Ltd. สงวนลิขสิทธิ์.</span>
     <span>ออกแบบและพัฒนาเว็บไซต์</span>
   </div>
 </footer>
@@ -81,6 +81,55 @@
   navToggle.addEventListener('click', () => {
     const isOpen = navLinks.classList.toggle('open');
     navToggle.setAttribute('aria-expanded', isOpen);
+  });
+</script>
+<script>
+  // ที่อยู่ของ Backend API — เปลี่ยนเป็น URL จริงตอน deploy (เช่น https://api.yourdomain.co.th)
+  const CONTACT_API_URL = "http://localhost:5000/api/contact";
+
+  const form = document.getElementById('contactForm');
+  const statusEl = document.getElementById('contactStatus');
+  const submitBtn = document.getElementById('contactSubmit');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      name: document.getElementById('name').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      message: document.getElementById('msg').value.trim(),
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "กำลังส่ง...";
+    statusEl.textContent = "";
+    statusEl.style.color = "";
+
+    try {
+      const res = await fetch(CONTACT_API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+
+      if (res.ok && data.ok) {
+        statusEl.textContent = data.message || "ส่งข้อความเรียบร้อยแล้ว";
+        statusEl.style.color = "var(--seal)";
+        form.reset();
+      } else {
+        const firstError = data.errors ? Object.values(data.errors)[0] : data.error;
+        statusEl.textContent = firstError || "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง";
+        statusEl.style.color = "crimson";
+      }
+    } catch (err) {
+      statusEl.textContent = "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาลองใหม่อีกครั้ง";
+      statusEl.style.color = "crimson";
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "ส่งข้อความ";
+    }
   });
 </script>
 </body>
