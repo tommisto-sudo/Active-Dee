@@ -46,6 +46,7 @@
     align-items:center;
     justify-content:space-between;
     height:74px;
+    height:58px;
     gap:12px;
   }
   .brand{
@@ -61,6 +62,7 @@
   }
   .brand .mark{
     width:36px;height:36px;
+    width:29px;height:29px;
     border:2px solid var(--brass);
     border-radius:50%;
     display:flex;align-items:center;justify-content:center;
