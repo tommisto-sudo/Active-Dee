@@ -1,0 +1,85 @@
+ไม่มีรายการที่เลือก
+
+ข้ามไปที่เนื้อหา
+การใช้ Gmail กับโปรแกรมอ่านหน้าจอ
+8 จาก 679
+New Web Hosting Account Information
+กล่องจดหมาย
+@Hosting
+
+hostatom <support@hostatom.com>
+พฤหัส 20 ส.ค. 14:55 (18 ชั่วโมงที่ผ่านมา)
+ถึง ฉัน
+
+hostatom
+เรียนคุณ Nathakorn Srichawana,
+
+โปรดอ่านข้อความทั้งหมดในอีเมลฉบับนี้อย่างละเอียด และทำสำเนาลงบนเอกสารเพื่อเก็บรักษาไว้
+
+ขอขอบคุณที่วางใจเลือกใช้บริการจากเรา ขณะนี้เราได้สร้างบัญชีผู้ใช้ Hosting ของคุณเรียบร้อยแล้ว โดยอีเมลฉบับนี้มีรายละเอียดสำคัญทั้งหมดเพื่อใช้บริการ
+
+หากคุณสั่งซื้อบริการ Hosting นี้พร้อมจดทะเบียนโดเมนกับเรา โดเมนที่จดทะเบียนของคุณจะไม่สามารถใช้งานได้ทันที ขั้นตอนการจดทะเบียนโดเมนจะสมบูรณ์ และโดเมนของคุณจะพร้อมใช้งานใน 24 ชั่วโมง ระหว่างนี้เว็บไซต์ และระบบอีเมลของคุณจะยังไม่สามารถใช้งานได้ แต่เราจะมี URL สำรองให้คุณใช้เพื่อเข้าชมเว็บไซต์ และทำการอัพโหลดไฟล์เข้ายังเว็บไซต์ของคุณก่อนที่ระบบจะใช้งานได้สมบูรณ์
+
+รายละเอียดบัญชีผู้ใช้ใหม่ของคุณ
+Web Hosting Package : Web Hosting Go PL
+Domain : activedeeconsult.com
+ค่าบริการที่ชำระแล้วครั้งแรก : 690.00 THB
+ค่าบริการชำระครั้งต่อไป : 690.00 THB
+ระยะเวลารอบบิล : รายปี
+ต่ออายุครั้งต่อไป : 20th Aug 2027
+
+รายละเอียดสำหรับการเข้าใช้งานในระบบ
+Control Panel URL: https://203.170.190.137:8443
+Username: activedee
+Password: ql8ek6P89Q
+
+เมื่อโดเมนคุณสามารถใช้งานได้แล้วคุณสามารถเข้าใช้งานผ่านทาง https://www.activedeeconsult.com:8443
+
+Server Information
+Server IP: 203.170.190.137
+
+หากคุณมีโดเมนอยู่แล้ว และต้องการนำมาใช้งานกับ Web Hosting ของคุณ คุณจำป็นต้องชี้ Nameserver ด้านล่างนี้เข้ากับโดเมนของคุณ
+Nameserver 1: th73.hostatom.com
+Nameserver 2: th74.hostatom.com
+
+การอัพโหลดเว็บไซต์ของคุณ
+ระหว่างที่การจดทะเบียนโดเมนของคุณยังไม่สมบูรณ์ คุณสามารถใช้ IP Address นี้เพื่อเข้าจัดการเว็บไซต์ของคุณ
+และเมื่อโดเมนของคุณจดทะเบียนเสร็จสมบูรณ์แล้วให้คุณใช้งานตามที่อยู่โดเมนด้านล่างนี้
+
+FTP Hostname: activedeeconsult.com
+Webpage URL: http://www.activedeeconsult.com
+
+E-Mail
+คุณสามารถเข้าใช้งานอีเมลของคุณผ่านเว็บไซต์ได้ทาง
+Webbase Email : webmail.activedeeconsult.com
+
+การตั้งค่าอีเมล
+
+คุณสามารถใช้รายละเอียดด้านล่างนี้สำหรับตั้งค่าอีเมลเข้ากับโปรแกรมหรืออุปกรณ์ที่คุณใช้งาน:
+POP3 Host Address: mail.activedeeconsult.com
+SMTP Host Address: mail.activedeeconsult.com
+Username: The email address you are checking email for
+Password: As specified in your control panel
+
+สำหรับลูกค้าที่เข้าใช้งานใหม่สามารถศึกษาขั้นตอนการใช้งานได้ที่
+https://kb.hostatom.com/content/6045/
+
+ขอบคุณที่เลือกใช้บริการจากเรา
+
+---
+hostatom
+hostatom.com
+
+ 
+
+ 
+
+visit our website | log in to your account | get support
+Copyright © hostatom, All rights reserved.
+
+G:\My Drive\Active-Dee\Active-Dee\index.html
+
+Pwd
+activedee_admin : Active@ee148
+
+

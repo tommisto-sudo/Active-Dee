@@ -48,7 +48,7 @@
 <footer class="site">
   <div class="footer-wrap">
     <div>
-      <h5>Active Dee Consult Co.,Ltd.</h5>
+      <h5>Active Dee Consult Cp.,Ltd.</h5>
       <p>ที่ปรึกษาบัญชี ภาษี และงานทะเบียนธุรกิจ ดูแลผู้ประกอบการให้ปฏิบัติตามกฎหมายได้อย่างมั่นใจ ตั้งแต่จดทะเบียนจนถึงปิดงบการเงิน</p>
     </div>
     <div>
@@ -64,8 +64,8 @@
     <div>
       <h5>ติดต่อ</h5>
       <ul>
-        <li>โทร. 02-XXX-XXXX</li>
-        <li>อีเมล info@example.co.th</li>
+        <li>โทร. 064-242-XXXX</li>
+        <li>อีเมล admin@activedeeconsult.com</li>
         <li>จันทร์–ศุกร์ 09:00–18:00 น.</li>
       </ul>
     </div>
@@ -84,8 +84,9 @@
   });
 </script>
 <script>
-  // ที่อยู่ของ Backend API — เปลี่ยนเป็น URL จริงตอน deploy (เช่น https://api.yourdomain.co.th)
-  const CONTACT_API_URL = "http://localhost:5000/api/contact";
+  // ที่อยู่ของไฟล์ contact.php — ถ้าวางไว้โฟลเดอร์เดียวกับหน้าเว็บ ใช้ path แบบสัมพัทธ์ได้เลย
+  // ถ้าวางไว้คนละที่ (เช่นแยกโฟลเดอร์ backend/) ให้เปลี่ยนเป็น path หรือ URL เต็ม เช่น "/backend/contact.php"
+  const CONTACT_API_URL = "contact.php";
 
   const form = document.getElementById('contactForm');
   const statusEl = document.getElementById('contactStatus');
