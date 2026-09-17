@@ -1,47 +1,62 @@
-# Backend สำหรับฟอร์ม Contact
+# Backend PHP — Active Dee Consult
 
-Flask API เล็ก ๆ ที่รับข้อมูลจากฟอร์มติดต่อในหน้า `contactus.html`, บันทึกลง SQLite และส่งอีเมลแจ้งเตือน
+ไฟล์ฝั่งเซิร์ฟเวอร์สำหรับเว็บไซต์ www.activedeeconsult.com
+รองรับ hosting ที่มี PHP + MySQL + SMTP (ไม่ต้องใช้ Python และไม่ต้องใช้ Composer)
 
-## วิธีติดตั้งและรัน
+## ไฟล์ในชุดนี้
 
-```bash
-cd backend
-python3 -m venv venv
-source venv/bin/activate        # Windows: venv\Scripts\activate
-pip install -r requirements.txt
+| ไฟล์ | หน้าที่ |
+|---|---|
+| `contact.php` | รับข้อมูลจากฟอร์มหน้า "ติดต่อเรา" → บันทึกลง MySQL → ส่งอีเมลแจ้งเตือน |
+| `rd-news.php` | ดึงข่าวประชาสัมพันธ์ล่าสุดจาก RSS กรมสรรพากร แปลงเป็น JSON ให้หน้าเว็บ |
+| `SimpleSmtpMailer.php` | คลาสส่งอีเมลผ่าน SMTP เขียนด้วย PHP ล้วน |
+| `config.php` | เก็บค่า DB และ SMTP — **ต้องแก้เป็นของจริงก่อนใช้** |
+| `schema.sql` | สร้างฐานข้อมูลและตาราง `contacts` |
 
-cp .env.example .env
-# แก้ค่าใน .env ให้เป็นบัญชีอีเมลจริง (ดูวิธีทำ App Password ของ Gmail ในคอมเมนต์ไฟล์ .env.example)
+## ขั้นตอนติดตั้ง
 
-python app.py
-```
+1. **สร้างฐานข้อมูล**
+   ```bash
+   mysql -u root -p < schema.sql
+   ```
+   หรือ import ผ่าน phpMyAdmin
 
-เมื่อรันสำเร็จ จะเปิดที่ `http://localhost:5000` และมี endpoint หลักคือ
+   > ถ้าเคยสร้างตารางจากเวอร์ชันก่อนแล้ว ให้รันเพิ่มเพื่อรองรับช่อง "บริการที่สนใจ":
+   > ```sql
+   > ALTER TABLE contacts ADD COLUMN service VARCHAR(120) DEFAULT NULL AFTER phone;
+   > ```
 
-- `POST /api/contact` — รับข้อมูลฟอร์ม `{ name, email, phone, message }`
-- `GET /api/health` — เช็คว่า server ทำงานอยู่
-- `GET /api/rd-news?limit=4` — ดึงข่าวประชาสัมพันธ์ล่าสุดจาก RSS ของกรมสรรพากร (`rd.go.th/publish.xml`)
-  แปลงเป็น JSON ให้หน้าแรกเรียกใช้แสดงผลอัตโนมัติ มีการ cache ไว้ 30 นาทีต่อครั้ง
-  เพื่อไม่ให้ยิงไปที่เว็บกรมสรรพากรถี่เกินไป ถ้าดึงสดไม่ได้จะส่งข้อมูลที่ cache ไว้ล่าสุดกลับไปแทน
+2. **แก้ `config.php`** ใส่ค่าจริงของ DB และ SMTP
 
-## เชื่อมกับหน้าเว็บ
+3. **อัปโหลดไฟล์ PHP ทั้งหมดไว้โฟลเดอร์เดียวกับไฟล์ HTML**
+   เพราะหน้าเว็บเรียกแบบ path สัมพัทธ์ (`contact.php`, `rd-news.php`)
 
-ในไฟล์ `contactus.html` มีตัวแปร `CONTACT_API_URL` อยู่ในสคริปต์ท้ายไฟล์ ตอนนี้ตั้งเป็น
-`http://localhost:5000/api/contact` สำหรับทดสอบในเครื่อง — พอ deploy จริงให้เปลี่ยนเป็น URL ของ backend จริง เช่น
-`https://api.yourdomain.co.th/api/contact`
+   โครงสร้างที่ควรเป็นบน server:
+   ```
+   public_html/
+     index.html  aboutus.html  services.html  packages.html
+     blog.html   article.html  contactus.html  style.css
+     contact.php  rd-news.php  config.php  SimpleSmtpMailer.php
+   ```
 
-## ข้อมูลที่บันทึก
+   ถ้าต้องการแยกไฟล์ PHP ไว้คนละโฟลเดอร์ ให้แก้ตัวแปรในไฟล์ HTML:
+   - `contactus.html` → `const CONTACT_API = "contact.php";`
+   - `index.html` และ `blog.html` → `const RD_API = "rd-news.php?limit=4";`
 
-ทุกครั้งที่มีคนกรอกฟอร์ม ข้อมูลจะถูกบันทึกลงไฟล์ `contacts.db` (SQLite) โดยอัตโนมัติ แม้อีเมลจะส่งไม่สำเร็จ
-ข้อมูลก็ยังไม่หาย สามารถเปิดดูด้วยโปรแกรม เช่น DB Browser for SQLite
+4. **ตั้งสิทธิ์โฟลเดอร์ให้เขียนไฟล์ได้** (สำหรับ cache ข่าวสรรพากร)
+   `rd-news.php` จะสร้างไฟล์ `cache_rd_news.json` อัตโนมัติ
+   ถ้าเขียนไม่ได้ ระบบยังทำงานได้ปกติ เพียงแต่จะดึง RSS ใหม่ทุกครั้ง
 
-## Deploy จริง
+## ทดสอบว่าใช้งานได้
 
-แนะนำให้ deploy ด้วย gunicorn แทนการรัน `python app.py` ตรง ๆ (dev server ของ Flask ไม่เหมาะกับ production):
+- เปิด `https://www.activedeeconsult.com/rd-news.php?limit=4` ในเบราว์เซอร์
+  ควรเห็น JSON ข่าวจากกรมสรรพากร
+- กรอกฟอร์มในหน้า "ติดต่อเรา" แล้วตรวจว่ามีแถวใหม่ในตาราง `contacts`
 
-```bash
-pip install gunicorn
-gunicorn -w 2 -b 0.0.0.0:5000 app:app
-```
+## หมายเหตุสำคัญ
 
-แล้วนำไปวางหลัง reverse proxy เช่น Nginx หรือ deploy บนแพลตฟอร์มอย่าง Render / Railway / Fly.io ก็ได้
+- ต้องเปิดหน้าเว็บผ่าน `http://` หรือ `https://` เท่านั้น — เปิดไฟล์ตรง ๆ แบบ `file://` จะเรียก PHP ไม่ได้
+- ถ้าอีเมลส่งไม่ออก **ข้อมูลฟอร์มยังถูกบันทึกลงฐานข้อมูลตามปกติ ไม่หาย** ให้ตรวจ error log ของ PHP
+- Gmail ต้องใช้ **App Password** (สร้างที่ `myaccount.google.com/apppasswords`) ไม่ใช่รหัสผ่านบัญชีปกติ
+- ถ้า SMTP ของ host ใช้พอร์ต 465 (SSL ตรง ไม่ใช่ STARTTLS) ต้องปรับ `SimpleSmtpMailer.php` ให้เชื่อมผ่าน `ssl://` — แจ้งได้ถ้าต้องการเวอร์ชันนั้น
+- `rd-news.php` ต้องให้ server เรียกเน็ตออกภายนอกได้ (allow_url_fopen หรือ cURL) — ไฟล์นี้รองรับทั้งสองแบบอยู่แล้ว

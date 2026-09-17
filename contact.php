@@ -52,6 +52,7 @@ if (!is_array($data)) {
 $name = trim((string)($data['name'] ?? ''));
 $email = trim((string)($data['email'] ?? ''));
 $phone = trim((string)($data['phone'] ?? ''));
+$service = trim((string)($data['service'] ?? ''));
 $message = trim((string)($data['message'] ?? ''));
 
 $errors = [];
@@ -83,9 +84,9 @@ $ip = $_SERVER['REMOTE_ADDR'] ?? null;
 
 $stmt = mysqli_prepare(
     $mysqli,
-    'INSERT INTO contacts (name, email, phone, message, ip_address, created_at) VALUES (?, ?, ?, ?, ?, NOW())'
+    'INSERT INTO contacts (name, email, phone, service, message, ip_address, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())'
 );
-mysqli_stmt_bind_param($stmt, 'sssss', $name, $email, $phone, $message, $ip);
+mysqli_stmt_bind_param($stmt, 'ssssss', $name, $email, $phone, $service, $message, $ip);
 
 if (!mysqli_stmt_execute($stmt)) {
     error_log('Insert failed: ' . mysqli_stmt_error($stmt));
@@ -103,7 +104,8 @@ try {
     $body = "มีข้อความติดต่อใหม่จากหน้าเว็บไซต์\n\n"
         . "ชื่อ: {$name}\n"
         . "อีเมล: {$email}\n"
-        . "เบอร์โทร: " . ($phone !== '' ? $phone : '-') . "\n\n"
+        . "เบอร์โทร: " . ($phone !== '' ? $phone : '-') . "\n"
+        . "บริการที่สนใจ: " . ($service !== '' ? $service : '-') . "\n\n"
         . "ข้อความ:\n{$message}\n\n"
         . '---' . "\n"
         . 'ส่งเมื่อ: ' . date('d/m/Y H:i');
