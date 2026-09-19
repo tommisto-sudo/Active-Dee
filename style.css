@@ -517,3 +517,9 @@ footer.site{background:var(--primary-ink); color:#CFE3EF; font-size:.9rem;}
   display:block;
   border-radius:var(--radius);
 }
+.mark img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:inherit;
+}
