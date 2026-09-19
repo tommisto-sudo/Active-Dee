@@ -146,10 +146,14 @@ h1.hero-h em{font-style:normal; color:var(--gold-deep);}
   border:1.5px solid transparent; cursor:pointer; transition:.2s;
 }
 .btn-primary{background:var(--primary-deep); color:#fff; box-shadow:0 4px 16px rgba(59,126,168,.32);}
+.btn-primary-blink{background:var(--primary-deep); color:yellow; box-shadow:0 4px 16px rgba(59,126,168,.32); 
+  animation: blink 0.9s ease-in-out infinite;}
 .btn-primary:hover{background:var(--primary-ink);}
 .btn-gold{background:var(--gold); color:#4A3A12; box-shadow:0 4px 16px rgba(217,167,60,.3);}
 .btn-gold:hover{background:var(--gold-deep); color:#fff;}
 .btn-ghost{background:var(--white); color:var(--primary-deep); border-color:var(--line);}
+.btn-ghost-blink{background:var(--white); color:var(--primary-deep); border-color:var(--line);
+  animation: blink 0.9s ease-in-out infinite;}
 .btn-ghost:hover{border-color:var(--primary);}
 
 /* hero card */
