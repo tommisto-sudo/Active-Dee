@@ -15,7 +15,7 @@ declare(strict_types=1);
 header('Content-Type: application/json; charset=utf-8');
 
 // ปรับ origin ให้ตรงกับโดเมนจริงตอน deploy (ใส่ * ไว้ก่อนสำหรับทดสอบ)
-header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Origin: https://activedeeconsult.com');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 

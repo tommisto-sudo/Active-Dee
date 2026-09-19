@@ -7,11 +7,11 @@
 // ===== ฐานข้อมูล (MySQL) =====
 define('DB_HOST', 'activedeeconsult.com');
 define('DB_NAME', 'activedee_contacts');
-define('DB_USER', 'activedee_admin');
-define('DB_PASS', 'Active@ee148');
+define('DB_USER', 'activedee_contacts');
+define('DB_PASS', 'Contacts228');
 
 // ===== SMTP สำหรับส่งอีเมลแจ้งเตือน =====
-define('SMTP_HOST', 'smtp.activedeeconsult.com');   // หรือ SMTP ของโฮสต์คุณเอง เช่น mail.yourdomain.co.th
+define('SMTP_HOST', 'mail.activedeeconsult.com');   // หรือ SMTP ของโฮสต์คุณเอง เช่น mail.yourdomain.co.th
 define('SMTP_PORT', 587);                // 587 = STARTTLS (แนะนำ), 465 = SSL โดยตรง
 define('SMTP_USE_TLS', true);
 define('SMTP_USER', 'admin@activedeeconsult.com');
