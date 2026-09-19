@@ -146,7 +146,7 @@ h1.hero-h em{font-style:normal; color:var(--gold-deep);}
   border:1.5px solid transparent; cursor:pointer; transition:.2s;
 }
 .btn-primary{background:var(--primary-deep); color:#fff; box-shadow:0 4px 16px rgba(59,126,168,.32);}
-.btn-primary-blink{background:var(--primary-deep); color:yellow; box-shadow:0 4px 16px rgba(59,126,168,.32); 
+.btn-primary-blink{background:var(--primary-deep); color:#ba1d2a; box-shadow:0 4px 16px rgba(59,126,168,.32); 
   animation: blink 0.9s ease-in-out infinite;}
 .btn-primary:hover{background:var(--primary-ink);}
 .btn-gold{background:var(--gold); color:#4A3A12; box-shadow:0 4px 16px rgba(217,167,60,.3);}
@@ -156,6 +156,11 @@ h1.hero-h em{font-style:normal; color:var(--gold-deep);}
   animation: blink 0.9s ease-in-out infinite;}
 .btn-ghost:hover{border-color:var(--primary);}
 
+@keyframes blink {
+  0% { background-color: #3B7EA8; }
+  50% { background-color: rgba(255, 255, 0, 0.25); }
+  100% { background-color: #3B7EA8; }
+}
 /* hero card */
 .hero-card{
   background:var(--white); border-radius:var(--radius);
