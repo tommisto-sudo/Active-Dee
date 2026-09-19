@@ -32,7 +32,7 @@
       </span>
     </a>
     <nav class="links" id="navLinks">
-      <a href="index.html">หน้าแรก</a><a href="aboutus.html">เกี่ยวกับเรา</a><a href="services.html">บริการ</a><a href="packages.html">แพ็กเกจราคา</a><a class="current" href="blog.html">บทความ</a><a href="contactus.html">ติดต่อเรา</a>
+      <a href="index.html">หน้าแรก</a><a href="aboutus.html">เกี่ยวกับเรา</a><a href="services.html">บริการ</a><a href="packages.html">แพ็กเกจราคา</a><a class="current" href="blog.html">บทความและข่าวสาร</a><a href="contactus.html">ติดต่อเรา</a>
     </nav>
     <a class="nav-cta" href="contactus.html">ปรึกษาฟรี</a>
     <button class="nav-toggle" id="navToggle" aria-label="เปิดเมนู" aria-expanded="false">☰</button>
@@ -158,14 +158,15 @@
   document.getElementById('postGrid').innerHTML = posts.map(p => `
     <a class="post" href="article.html?id=${p.id}">
       <div class="thumb">
-        <svg viewBox="0 0 300 160" xmlns="http://www.w3.org/2000/svg">
-          <line x1="0" y1="30" x2="300" y2="30" stroke="#fff" stroke-width="1"/>
-          <line x1="0" y1="62" x2="300" y2="62" stroke="#fff" stroke-width="1"/>
-          <line x1="0" y1="94" x2="300" y2="94" stroke="#fff" stroke-width="1"/>
-          <line x1="0" y1="126" x2="300" y2="126" stroke="#fff" stroke-width="1"/>
-        </svg>
-        <div class="date"><b>${p.d}</b><span>${p.m}</span></div>
-      </div>
+      ${p.img ? `<img src="${p.img}" alt="${p.t}" loading="lazy">` : `
+      <svg viewBox="0 0 300 160" xmlns="http://www.w3.org/2000/svg">
+        <line x1="0" y1="30" x2="300" y2="30" stroke="#fff" stroke-width="1"/>
+        <line x1="0" y1="62" x2="300" y2="62" stroke="#fff" stroke-width="1"/>
+        <line x1="0" y1="94" x2="300" y2="94" stroke="#fff" stroke-width="1"/>
+        <line x1="0" y1="126" x2="300" y2="126" stroke="#fff" stroke-width="1"/>
+      </svg>`}
+      <div class="date"><b>${p.d}</b><span>${p.m}</span></div>
+    </div>
       <div class="pb">
         <div class="cat">${p.cat}</div>
         <h3>${p.t}</h3>

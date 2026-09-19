@@ -343,6 +343,7 @@ section.blk.cream{background:var(--cream);}
   height:158px; position:relative; overflow:hidden;
   background:linear-gradient(150deg,var(--primary),var(--primary-ink));
 }
+.post .thumb img{width:100%; height:100%; object-fit:cover; display:block;}
 .post .thumb svg{position:absolute; inset:0; width:100%; height:100%; opacity:.16;}
 .post .thumb .date{
   position:absolute; top:13px; right:13px; background:rgba(255,255,255,.95);
@@ -350,7 +351,6 @@ section.blk.cream{background:var(--cream);}
 }
 .post .thumb .date b{display:block; font-size:1rem; font-weight:700;}
 .post .thumb .date span{font-size:.65rem; color:var(--muted);}
-.post .thumb img{width:100%; height:100%; object-fit:cover; display:block;}
 .post .pb{padding:20px; display:flex; flex-direction:column; flex:1;}
 .post .cat{font-size:.75rem; color:var(--gold-deep); font-weight:600; margin-bottom:8px;}
 .post h3{margin:0 0 9px; font-size:1rem; line-height:1.55; color:var(--primary-ink); font-weight:600;}
