@@ -155,9 +155,9 @@
       t:"เอกสารที่ต้องเก็บไว้ให้ครบ เพื่อไม่ให้มีปัญหาตอนปิดงบ",
       e:"รายการเอกสารที่กิจการต้องจัดเก็บตามกฎหมาย พร้อมระยะเวลาที่ต้องเก็บรักษา" }
   ];
-  document.getElementById('postGrid').innerHTML = posts.map(p => `
-    <a class="post" href="article.html?id=${p.id}">
-      <div class="thumb">
+document.getElementById('postGrid').innerHTML = posts.map(p => `
+  <a class="post" href="article.html?id=${p.id}">
+    <div class="thumb">
       ${p.img ? `<img src="${p.img}" alt="${p.t}" loading="lazy">` : `
       <svg viewBox="0 0 300 160" xmlns="http://www.w3.org/2000/svg">
         <line x1="0" y1="30" x2="300" y2="30" stroke="#fff" stroke-width="1"/>
