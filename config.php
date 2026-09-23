@@ -12,7 +12,7 @@ define('DB_PASS', 'xxxxxxxx);
 
 // ===== SMTP สำหรับส่งอีเมลแจ้งเตือน =====
 define('SMTP_HOST', 'mail.activedeeconsult.com');   // หรือ SMTP ของโฮสต์คุณเอง เช่น mail.yourdomain.co.th
-define('SMTP_PORT', 587);                // 587 = STARTTLS (แนะนำ), 465 = SSL โดยตรง
+define('SMTP_PORT', 465);                // 587 = STARTTLS (แนะนำ), 465 = SSL โดยตรง
 define('SMTP_USE_TLS', true);
 define('SMTP_USER', 'admin@activedeeconsult.com');
 define('SMTP_PASSWORD', 'xxxxxxxxxx'); // ถ้าใช้ Gmail ต้องใช้ App Password ไม่ใช่รหัสผ่านบัญชีปกติ

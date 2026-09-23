@@ -100,6 +100,7 @@ mysqli_close($mysqli);
 // ===== 3) ส่งอีเมลแจ้งเตือน (ถ้าส่งไม่สำเร็จ ไม่ทำให้ request ทั้งหมด fail เพราะข้อมูลถูกบันทึกแล้ว) =====
 try {
     $mailer = new SimpleSmtpMailer(SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, SMTP_USE_TLS);
+    //$mailer = new send(SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, SMTP_USE_TLS);
 
     $body = "มีข้อความติดต่อใหม่จากหน้าเว็บไซต์\n\n"
         . "ชื่อ: {$name}\n"
@@ -109,7 +110,7 @@ try {
         . "ข้อความ:\n{$message}\n\n"
         . '---' . "\n"
         . 'ส่งเมื่อ: ' . date('d/m/Y H:i');
-
+        
     $mailer->send(
         MAIL_FROM_EMAIL,
         MAIL_FROM_NAME,
@@ -117,6 +118,8 @@ try {
         "[ติดต่อจากเว็บไซต์] ข้อความใหม่จาก {$name}",
         $body
     );
+    
+
 } catch (Throwable $e) {
     error_log('Send mail failed: ' . $e->getMessage());
     // ไม่ respond error ตรงนี้ เพราะข้อมูลถูกบันทึกลง DB เรียบร้อยแล้ว
