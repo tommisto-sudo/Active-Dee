@@ -116,7 +116,7 @@ nav.links a.current::after{
 
 /* ===== HERO ===== */
 .hero{
-  background:linear-gradient(165deg,#EAF4FC 0%, var(--paper) 55%, var(--cream) 100%);
+  background:linear-gradient(165deg, rgba(234,244,252,.7) 0%, rgba(245,250,254,.7) 55%, rgba(255,249,239,.7) 100%);
   padding:64px 0 72px;
   position:relative; overflow:hidden;
 }
@@ -617,3 +617,6 @@ footer.site{background:var(--primary-ink); color:#CFE3EF; font-size:.9rem;}
 }
 .pv2-btn:hover{background:var(--primary-deep);}
 .logo-card:hover{transform:translateY(-5px); box-shadow:var(--shadow-lg);}
+.blk, .blk.alt, .blk.cream{
+  background-color: rgba(255, 255, 255, 0.85); /* ปรับค่า 0.85 ให้โปร่งขึ้น/ทึบขึ้นได้ */
+}
