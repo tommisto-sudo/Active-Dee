@@ -546,12 +546,12 @@ footer.site{background:var(--primary-ink); color:#CFE3EF; font-size:.9rem;}
   display:flex;
   align-items:center;
   justify-content:center;
-  min-height:110px;
-  padding:24px;
+  min-height:140px;
+  padding:14px;
 }
 .logo-card img{
   max-width:100%;
-  max-height:56px;
+  max-height:110px;
   width:auto;
   height:auto;
   object-fit:contain;
@@ -619,4 +619,18 @@ footer.site{background:var(--primary-ink); color:#CFE3EF; font-size:.9rem;}
 .logo-card:hover{transform:translateY(-5px); box-shadow:var(--shadow-lg);}
 .blk, .blk.alt, .blk.cream{
   background-color: rgba(255, 255, 255, 0.85); /* ปรับค่า 0.85 ให้โปร่งขึ้น/ทึบขึ้นได้ */
+}
+.dark-cards .card{
+  background: var(--primary-ink);
+  border-color: var(--primary-ink);
+}
+.dark-cards .card h3{ color:#fff; }
+.dark-cards .card p{ color: rgba(255,255,255,.72); }
+.dark-cards .card ul li{ color: rgba(255,255,255,.78); }
+.dark-cards .card .ic{
+  background: rgba(255,255,255,.12);
+  color:#fff;
+}
+.dark-cards .card:hover{
+  box-shadow: 0 10px 34px rgba(0,0,0,.35);
 }
