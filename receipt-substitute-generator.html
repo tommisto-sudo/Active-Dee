@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>สร้างใบรับรองแทนใบเสร็จรับเงิน | Active Dee Consult</title>
+<meta name="description" content="เครื่องมือสร้างใบรับรองแทนใบเสร็จรับเงินฟรี กรอกข้อมูลแล้วพิมพ์หรือบันทึกเป็น PDF ได้ทันที">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* ===== ส่วนเฉพาะของเครื่องมือนี้ (ไม่กระทบหน้าอื่น) ===== */
+  .tool-wrap{
+    max-width:1160px; margin:0 auto; padding:40px 20px 90px;
+    display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start;
+  }
+  @media (max-width:960px){ .tool-wrap{grid-template-columns:1fr;} }
+
+  .tool-form{
+    background:var(--white); border:1px solid var(--line); border-radius:var(--radius);
+    padding:28px 26px; position:sticky; top:80px;
+  }
+  @media (max-width:960px){ .tool-form{position:static;} }
+  .tool-form h2{margin:0 0 6px; color:var(--primary-ink); font-size:1.2rem;}
+  .tool-form .hint{margin:0 0 22px; font-size:.85rem; color:var(--muted);}
+
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block; font-size:.85rem; font-weight:600; margin-bottom:6px; color:var(--text);}
+  .field input, .field textarea{
+    width:100%; border:1px solid var(--line); background:var(--paper);
+    padding:10px 12px; border-radius:var(--radius-sm); font-family:inherit; font-size:.92rem; color:var(--text);
+  }
+  .field input:focus, .field textarea:focus{
+    outline:none; border-color:var(--primary); background:var(--white);
+    box-shadow:0 0 0 3px rgba(111,168,220,.18);
+  }
+
+  .item-row{
+    display:grid; grid-template-columns:1fr 130px 34px; gap:8px; margin-bottom:8px; align-items:center;
+  }
+  .item-row input{
+    border:1px solid var(--line); background:var(--paper); padding:9px 10px;
+    border-radius:var(--radius-sm); font-family:inherit; font-size:.9rem;
+  }
+  .item-remove{
+    width:32px; height:32px; border-radius:8px; border:1px solid var(--line);
+    background:var(--white); color:#C0392B; cursor:pointer; font-size:.95rem; line-height:1;
+  }
+  .item-remove:hover{background:#FDEDEC;}
+  .add-item-btn{
+    display:inline-flex; align-items:center; gap:6px; margin-top:6px; margin-bottom:20px;
+    background:none; border:1.5px dashed var(--primary); color:var(--primary-deep);
+    padding:9px 16px; border-radius:99px; font-size:.86rem; font-weight:600; cursor:pointer;
+  }
+  .add-item-btn:hover{background:var(--paper);}
+
+  .action-row{display:flex; gap:10px; margin-top:8px; flex-wrap:wrap;}
+
+  /* ===== ตัวอย่างเอกสาร ===== */
+  .doc-wrap{
+    background:var(--white); border:1px solid var(--line); border-radius:var(--radius);
+    padding:0; overflow:hidden;
+  }
+  .doc-scale{padding:26px;}
+  #docSheet{
+    background:#fff; color:#111; font-family:'Noto Sans Thai',sans-serif;
+    padding:34px 36px; border:1px solid #ddd; font-size:14px; line-height:1.9;
+  }
+  #docSheet h1{
+    text-align:center; font-size:1.25rem; margin:0 0 4px; color:#111;
+  }
+  #docSheet .en-title{text-align:center; font-size:.82rem; color:#555; margin:0 0 22px;}
+  .doc-row{display:flex; gap:6px; margin-bottom:10px; flex-wrap:wrap;}
+  .doc-row .lbl{white-space:nowrap; color:#333;}
+  .doc-row .val{border-bottom:1px dotted #999; flex:1; min-width:120px; padding-bottom:1px;}
+  table.doc-table{width:100%; border-collapse:collapse; margin:18px 0;}
+  table.doc-table th, table.doc-table td{
+    border:1px solid #999; padding:7px 10px; font-size:.92rem;
+  }
+  table.doc-table th{background:#F2F2F2; text-align:left;}
+  table.doc-table td.amt{text-align:right; white-space:nowrap;}
+  table.doc-table tr.total-row td{font-weight:700; background:#FAFAFA;}
+  .doc-declare{margin:22px 0; font-size:.94rem; line-height:2;}
+  .sign-area{
+    display:grid; grid-template-columns:1fr 1fr; gap:30px; margin-top:50px; text-align:center;
+  }
+  .sign-line{border-bottom:1px dotted #666; height:34px; margin-bottom:8px;}
+  .sign-cap{font-size:.88rem; color:#333;}
+
+  @media print{
+    header.site, .topbar, footer.site, .floats, .tool-form, .doc-note{display:none !important;}
+    body{background:#fff !important;}
+    .tool-wrap{display:block; padding:0; max-width:none;}
+    .doc-wrap{border:none; border-radius:0;}
+    .doc-scale{padding:0;}
+    #docSheet{border:none; padding:0; font-size:13px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <span class="tb-left">บริษัท แอคทีฟ ดี คอนซัลท์ จำกัด | บริษัทบัญชีและภาษี</span>
+    <span class="tb-right">
+      <a href="tel:0642420000">โทร. 093-694-1794</a>
+      <a href="mailto:admin@activedeeconsult.com">admin@activedeeconsult.com</a>
+    </span>
+  </div>
+</div>
+
+<header class="site">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html">
+      <span class="mark">AD</span>
+      <span class="bt">
+        <b>Active Dee Consult</b>
+        <span>รับทำบัญชี · ภาษี · จดทะเบียนบริษัท</span>
+      </span>
+    </a>
+<nav class="links" id="navLinks">
+  <a class="current" href="index.html">หน้าแรก</a>
+  <a href="aboutus.html">เกี่ยวกับเรา</a>
+  <a href="services.html">บริการ</a>
+  <a href="packages.html">แพ็กเกจราคา</a>
+  <a href="blog.html">บทความและข่าวสาร</a>
+  <span class="has-sub">
+    <a href="#">เครื่องมือ<span class="caret">&#9660;</span></a>
+    <span class="sub">
+      <a href="receipt-substitute-generator.html">สร้างใบรับรองแทนใบเสร็จรับเงิน</a>
+    </span>
+  </span>
+  <a href="contactus.html">ติดต่อเรา</a>
+</nav>
+    <a class="nav-cta" href="contactus.html">ปรึกษาฟรี</a>
+    <button class="nav-toggle" id="navToggle" aria-label="เปิดเมนู" aria-expanded="false">&#9776;</button>
+  </div>
+</header>
+
+<section class="pagehead">
+  <div class="wrap">
+    <div class="crumb"><a href="index.html">หน้าแรก</a><i>/</i>เครื่องมือ</div>
+    <h1>สร้างใบรับรองแทนใบเสร็จรับเงิน</h1>
+    <p>กรอกข้อมูลด้านซ้าย ระบบจะขึ้นตัวอย่างเอกสารให้ทันที เสร็จแล้วกดปุ่มพิมพ์เพื่อบันทึกเป็น PDF
+    ข้อมูลทั้งหมดประมวลผลในเบราว์เซอร์ของคุณเท่านั้น ไม่ถูกส่งหรือบันทึกไว้ที่ไหน</p>
+  </div>
+</section>
+
+<div class="tool-wrap">
+
+  <!-- ฟอร์มกรอกข้อมูล -->
+  <div class="tool-form">
+    <h2>ข้อมูลเอกสาร</h2>
+    <p class="hint">ทุกช่องอัปเดตตัวอย่างเอกสารแบบเรียลไทม์</p>
+
+    <div class="field">
+      <label for="buyerName">ชื่อนิติบุคคล / กิจการ (ผู้จ่ายเงิน)</label>
+      <input id="buyerName" placeholder="เช่น บริษัท ตัวอย่าง จำกัด">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="docDate">วันที่จ่ายเงิน</label>
+        <input id="docDate" type="date">
+      </div>
+      <div class="field">
+        <label for="docNo">เลขที่เอกสาร (ถ้ามี)</label>
+        <input id="docNo" placeholder="เช่น ADC-0001">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>รายละเอียดรายจ่าย</label>
+      <div id="itemRows"></div>
+      <button type="button" class="add-item-btn" id="addItemBtn">+ เพิ่มรายการ</button>
+    </div>
+
+    <div class="field">
+      <label for="payerName">ชื่อผู้เบิกจ่าย</label>
+      <input id="payerName" placeholder="ชื่อ-นามสกุล">
+    </div>
+
+    <div class="field">
+      <label for="payerPosition">ตำแหน่ง</label>
+      <input id="payerPosition" placeholder="เช่น เจ้าหน้าที่ธุรการ">
+    </div>
+
+    <div class="action-row">
+      <button type="button" class="btn btn-primary" id="printBtn">พิมพ์ / บันทึกเป็น PDF</button>
+      <button type="button" class="btn btn-ghost" id="resetBtn">ล้างฟอร์ม</button>
+    </div>
+  </div>
+
+  <!-- ตัวอย่างเอกสาร -->
+  <div class="doc-wrap">
+    <div class="doc-scale">
+      <div id="docSheet">
+        <h1>ใบรับรองแทนใบเสร็จรับเงิน</h1>
+        <div class="en-title">Certificate in Lieu of Receipt</div>
+
+        <div class="doc-row"><span class="lbl">บริษัท/ห้างหุ้นส่วน:</span><span class="val" id="p_buyer">-</span></div>
+        <div class="doc-row">
+          <span class="lbl">วันที่:</span><span class="val" id="p_date" style="max-width:160px;">-</span>
+          <span class="lbl" style="margin-left:20px;">เลขที่เอกสาร:</span><span class="val" id="p_docno" style="max-width:160px;">-</span>
+        </div>
+
+        <table class="doc-table">
+          <thead>
+            <tr><th style="width:50px;">ลำดับ</th><th>รายการ</th><th style="width:140px;">จำนวนเงิน (บาท)</th></tr>
+          </thead>
+          <tbody id="p_items"></tbody>
+          <tfoot>
+            <tr class="total-row">
+              <td colspan="2" style="text-align:right;">รวมทั้งสิ้น</td>
+              <td class="amt" id="p_total">0.00</td>
+            </tr>
+          </tfoot>
+        </table>
+        <div class="doc-row"><span class="lbl">ตัวอักษร:</span><span class="val" id="p_totalText">-</span></div>
+
+        <div class="doc-declare">
+          ข้าพเจ้า <span id="p_payer" style="border-bottom:1px dotted #999; padding:0 6px;">...................</span>
+          ตำแหน่ง <span id="p_position" style="border-bottom:1px dotted #999; padding:0 6px;">...................</span>
+          ขอรับรองว่า รายจ่ายข้างต้นนี้ไม่อาจเรียกเก็บใบเสร็จรับเงินจากผู้รับได้จริง
+          และข้าพเจ้าได้จ่ายไปในกิจการของบริษัทจริงทุกประการ
+        </div>
+
+        <div class="sign-area">
+          <div>
+            <div class="sign-line"></div>
+            <div class="sign-cap">ผู้เบิกจ่าย / วันที่</div>
+          </div>
+          <div>
+            <div class="sign-line"></div>
+            <div class="sign-cap">ผู้อนุมัติ / วันที่</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="doc-note" style="padding:0 26px 22px; font-size:.8rem; color:var(--muted);">
+      * เอกสารนี้เป็นแบบฟอร์มทั่วไปตามแนวทางกรมสรรพากร ใช้เพื่ออ้างอิงเบื้องต้นเท่านั้น
+      กรณีมีข้อสงสัยเรื่องการใช้เป็นรายจ่ายทางภาษี แนะนำให้ปรึกษาผู้ทำบัญชีของกิจการก่อนใช้จริง
+    </p>
+  </div>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <div class="f-brand"><span class="mark">AD</span><b>Active Dee Consult</b></div>
+        <p>เราดูแลเรื่องบัญชีและภาษีให้เจ้าของธุรกิจมั่นใจได้ว่าทุกอย่างถูกต้อง
+        พร้อมให้คำแนะนำแก่ธุรกิจขนาดเล็กและธุรกิจที่กำลังเติบโต โดยทีมงานที่มีผู้สอบบัญชีรับอนุญาต (CPA)</p>
+      </div>
+      <div>
+        <h5>เมนู</h5>
+        <ul>
+          <li><a href="index.html">หน้าแรก</a></li>
+          <li><a href="aboutus.html">เกี่ยวกับเรา</a></li>
+          <li><a href="services.html">บริการ</a></li>
+          <li><a href="blog.html">บทความ</a></li>
+          <li><a href="contactus.html">ติดต่อเรา</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>ติดต่อเรา</h5>
+        <ul>
+          <li>โทร. <a href="tel:0642420000">093-694-1794</a></li>
+          <li><a href="mailto:admin@activedeeconsult.com">admin@activedeeconsult.com</a></li>
+          <li>จันทร์ – ศุกร์ 08.30 – 18.00 น.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© 2569 บริษัท แอคทีฟ ดี คอนซัลท์ จำกัด. สงวนลิขสิทธิ์.</span>
+      <span>www.activedeeconsult.com</span>
+    </div>
+  </div>
+</footer>
+
+<div class="floats">
+  <a class="float-btn call" href="tel:0642420000" aria-label="โทรหาเรา">&#9742;</a>
+  <a class="float-btn line" href="https://line.me/R/ti/p/@yoyo-darin" target="_blank" rel="noopener" aria-label="แชทผ่าน LINE">&#128172;</a>
+  <a class="float-btn fb" href="https://www.facebook.com/profile.php?id=61593271767709" target="_blank" rel="noopener" aria-label="ไปที่ Facebook">&#128241;</a>
+  <a class="float-btn top" href="#" id="toTop" aria-label="กลับขึ้นบน">&#8593;</a>
+</div>
+
+<script>
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open);
+  });
+  document.getElementById('toTop').addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+<script>
+  // ===================== เครื่องมือสร้างใบรับรองแทนใบเสร็จรับเงิน =====================
+
+  const itemRowsEl = document.getElementById('itemRows');
+  let itemCount = 0;
+
+  function addItemRow(desc = '', amount = '') {
+    itemCount++;
+    const row = document.createElement('div');
+    row.className = 'item-row';
+    row.innerHTML = `
+      <input type="text" placeholder="รายการ เช่น ค่าจอดรถ" class="item-desc" value="${desc}">
+      <input type="number" placeholder="จำนวนเงิน" class="item-amt" step="0.01" min="0" value="${amount}">
+      <button type="button" class="item-remove" title="ลบรายการนี้">&times;</button>
+    `;
+    row.querySelector('.item-desc').addEventListener('input', renderDoc);
+    row.querySelector('.item-amt').addEventListener('input', renderDoc);
+    row.querySelector('.item-remove').addEventListener('click', () => {
+      row.remove();
+      renderDoc();
+    });
+    itemRowsEl.appendChild(row);
+  }
+
+  document.getElementById('addItemBtn').addEventListener('click', () => addItemRow());
+
+  // ----- แปลงตัวเลขเป็นข้อความภาษาไทย (บาทถ้วน) -----
+  function bahtText(numStr) {
+    const num = parseFloat(numStr || 0);
+    if (isNaN(num) || num === 0) return 'ศูนย์บาทถ้วน';
+
+    const numText = ['', 'หนึ่ง', 'สอง', 'สาม', 'สี่', 'ห้า', 'หก', 'เจ็ด', 'แปด', 'เก้า'];
+    const unitText = ['', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน', 'ล้าน'];
+
+    function convert(numInt) {
+      let str = String(numInt);
+      let result = '';
+      const len = str.length;
+      for (let i = 0; i < len; i++) {
+        const digit = parseInt(str[i], 10);
+        const pos = len - i - 1; // ตำแหน่งหลัก นับจากขวา (0 = หลักหน่วย)
+        if (digit === 0) continue;
+        if (pos === 0 && digit === 1 && len > 1) {
+          result += 'เอ็ด';
+        } else if (pos === 1 && digit === 2) {
+          result += 'ยี่' + unitText[1];
+        } else if (pos === 1 && digit === 1) {
+          result += unitText[1];
+        } else {
+          result += numText[digit] + unitText[pos % 6];
+        }
+        if (pos > 0 && pos % 6 === 0) result += 'ล้าน';
+      }
+      return result;
+    }
+
+    const parts = num.toFixed(2).split('.');
+    const intPart = parseInt(parts[0], 10);
+    const decPart = parseInt(parts[1], 10);
+
+    let text = convert(intPart) + 'บาท';
+    text += decPart === 0 ? 'ถ้วน' : convert(decPart) + 'สตางค์';
+    return text;
+  }
+
+  function formatDateThai(dateStr) {
+    if (!dateStr) return '-';
+    const d = new Date(dateStr + 'T00:00:00');
+    const months = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+    return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear() + 543}`;
+  }
+
+  function renderDoc() {
+    document.getElementById('p_buyer').textContent = document.getElementById('buyerName').value || '-';
+    document.getElementById('p_date').textContent = formatDateThai(document.getElementById('docDate').value);
+    document.getElementById('p_docno').textContent = document.getElementById('docNo').value || '-';
+    document.getElementById('p_payer').textContent = document.getElementById('payerName').value || '...................';
+    document.getElementById('p_position').textContent = document.getElementById('payerPosition').value || '...................';
+
+    const rows = [...itemRowsEl.querySelectorAll('.item-row')];
+    let total = 0;
+    const tbody = document.getElementById('p_items');
+    tbody.innerHTML = rows.map((row, i) => {
+      const desc = row.querySelector('.item-desc').value || '-';
+      const amt = parseFloat(row.querySelector('.item-amt').value) || 0;
+      total += amt;
+      return `<tr><td>${i + 1}</td><td>${desc}</td><td class="amt">${amt.toLocaleString('th-TH', {minimumFractionDigits:2})}</td></tr>`;
+    }).join('') || '<tr><td colspan="3" style="text-align:center;color:#999;">ยังไม่มีรายการ</td></tr>';
+
+    document.getElementById('p_total').textContent = total.toLocaleString('th-TH', {minimumFractionDigits:2});
+    document.getElementById('p_totalText').textContent = bahtText(total);
+  }
+
+  [...document.querySelectorAll('.tool-form input')].forEach(el => el.addEventListener('input', renderDoc));
+
+  document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    document.querySelectorAll('.tool-form input').forEach(el => el.value = '');
+    itemRowsEl.innerHTML = '';
+    addItemRow();
+    renderDoc();
+  });
+
+  // เริ่มต้นด้วย 1 แถวรายการ และวันที่วันนี้
+  addItemRow();
+  document.getElementById('docDate').valueAsDate = new Date();
+  renderDoc();
+</script>
+
+</body>
+</html>

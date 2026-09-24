@@ -634,3 +634,29 @@ footer.site{background:var(--primary-ink); color:#CFE3EF; font-size:.9rem;}
 .dark-cards .card:hover{
   box-shadow: 0 10px 34px rgba(0,0,0,.35);
 }
+/* เมนูแบบมี dropdown ย่อย */
+nav.links .has-sub{position:relative;}
+nav.links .sub{
+  position:absolute; top:100%; left:-14px; min-width:240px;
+  background:var(--white); border:1px solid var(--line); border-radius:12px;
+  box-shadow:var(--shadow-lg); padding:8px; opacity:0; visibility:hidden;
+  transform:translateY(6px); transition:.18s; display:flex; flex-direction:column;
+  z-index:70;
+}
+nav.links .has-sub:hover .sub,
+nav.links .has-sub:focus-within .sub{opacity:1; visibility:visible; transform:translateY(0);}
+nav.links .sub a{
+  padding:9px 12px; border-radius:8px; font-size:.88rem; font-weight:400; border:none;
+}
+nav.links .sub a:hover{background:var(--paper); color:var(--primary-deep);}
+nav.links .caret{font-size:.62rem; margin-left:4px; opacity:.6;}
+
+@media (max-width:960px){
+  nav.links .sub{
+    position:static; opacity:1; visibility:visible; transform:none;
+    box-shadow:none; border:none; border-radius:0; min-width:0;
+    padding:0 0 8px 12px; background:transparent;
+  }
+  nav.links .sub a{border-top:none; padding:9px 12px; font-size:.85rem; color:var(--muted);}
+  nav.links .caret{display:none;}
+}
