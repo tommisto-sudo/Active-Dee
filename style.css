@@ -635,7 +635,11 @@ footer.site{background:var(--primary-ink); color:#CFE3EF; font-size:.9rem;}
   box-shadow: 0 10px 34px rgba(0,0,0,.35);
 }
 /* เมนูแบบมี dropdown ย่อย */
-nav.links .has-sub{position:relative;}
+nav.links .has-sub{
+  position:relative;
+  display:flex;
+  align-items:center;
+}
 nav.links .sub{
   position:absolute; top:100%; left:-14px; min-width:240px;
   background:var(--white); border:1px solid var(--line); border-radius:12px;
