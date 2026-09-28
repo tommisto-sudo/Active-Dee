@@ -150,6 +150,25 @@ h1.hero-h em{font-style:normal; color:var(--gold-deep);}
   padding:13px 26px; border-radius:99px; font-weight:600; font-size:.94rem;
   border:1.5px solid transparent; cursor:pointer; transition:.2s;
 }
+.btn-pink{
+  background: #C2185B;
+  border-color: #C2185B;
+  color: #fff;
+}
+.btn-pink:hover{
+  background: #9E123F;
+  border-color: #9E123F;
+}
+
+.btn-orange{
+  background: #E65100;
+  border-color: #E65100;
+  color: #fff;
+}
+.btn-orange:hover{
+  background: #BF3F00;
+  border-color: #BF3F00;
+}
 .btn-primary{background:var(--primary-deep); color:#fff; box-shadow:0 4px 16px rgba(59,126,168,.32);}
 .btn-primary-blink{background:var(--primary-deep); color:#ba1d2a; box-shadow:0 4px 16px rgba(59,126,168,.32); 
   animation: blink 0.9s ease-in-out infinite;}
