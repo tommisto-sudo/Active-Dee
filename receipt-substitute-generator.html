@@ -189,6 +189,8 @@
 
     <div class="action-row">
       <button type="button" class="btn btn-primary" id="printBtn">พิมพ์ / บันทึกเป็น PDF</button>
+      <button type="button" class="btn btn-ghost" id="wordBtn">ดาวน์โหลด Word (.docx)</button>
+      <button type="button" class="btn btn-ghost" id="excelBtn">ดาวน์โหลด Excel (.xlsx)</button>
       <button type="button" class="btn btn-ghost" id="resetBtn">ล้างฟอร์ม</button>
     </div>
   </div>
@@ -408,7 +410,135 @@
   addItemRow();
   document.getElementById('docDate').valueAsDate = new Date();
   renderDoc();
-</script>
+  // ----- รวมข้อมูลจากฟอร์ม (ใช้ร่วมกันทั้ง preview / Word / Excel) -----
+function collectData() {
+  const rows = [...itemRowsEl.querySelectorAll('.item-row')];
+  const items = rows.map(row => ({
+    desc: row.querySelector('.item-desc').value || '-',
+    amt: parseFloat(row.querySelector('.item-amt').value) || 0,
+  }));
+  const total = items.reduce((sum, it) => sum + it.amt, 0);
+  return {
+    buyer: document.getElementById('buyerName').value || '-',
+    dateText: formatDateThai(document.getElementById('docDate').value),
+    docNo: document.getElementById('docNo').value,
+    payerName: document.getElementById('payerName').value,
+    payerPosition: document.getElementById('payerPosition').value,
+    items, total, totalText: bahtText(total),
+  };
+}
 
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+
+// ----- ดาวน์โหลดเป็น Word (.docx) -----
+async function generateWordDoc() {
+  const { Document, Packer, Paragraph, TextRun, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle } = docx;
+  const d = collectData();
+
+  const cellBorder = { top:{style:BorderStyle.SINGLE,size:2,color:"999999"}, bottom:{style:BorderStyle.SINGLE,size:2,color:"999999"}, left:{style:BorderStyle.SINGLE,size:2,color:"999999"}, right:{style:BorderStyle.SINGLE,size:2,color:"999999"} };
+  function cell(text, opts = {}) {
+    return new TableCell({
+      borders: cellBorder,
+      width: opts.width ? { size: opts.width, type: WidthType.PERCENTAGE } : undefined,
+      children: [new Paragraph({ alignment: opts.align || AlignmentType.LEFT, children: [new TextRun({ text: String(text), bold: !!opts.bold })] })],
+    });
+  }
+
+  const itemRowsDocx = d.items.map((it, i) => new TableRow({
+    children: [
+      cell(i + 1, { width: 10, align: AlignmentType.CENTER }),
+      cell(it.desc, { width: 60 }),
+      cell(it.amt.toLocaleString('th-TH', {minimumFractionDigits:2}), { width: 30, align: AlignmentType.RIGHT }),
+    ],
+  }));
+
+  const table = new Table({
+    width: { size: 100, type: WidthType.PERCENTAGE },
+    rows: [
+      new TableRow({ children: [
+        cell("ลำดับ", { width:10, bold:true, align:AlignmentType.CENTER }),
+        cell("รายการ", { width:60, bold:true }),
+        cell("จำนวนเงิน (บาท)", { width:30, bold:true, align:AlignmentType.RIGHT }),
+      ]}),
+      ...itemRowsDocx,
+      new TableRow({ children: [
+        cell("", { width:10 }),
+        cell("รวมทั้งสิ้น", { width:60, bold:true, align:AlignmentType.RIGHT }),
+        cell(d.total.toLocaleString('th-TH', {minimumFractionDigits:2}), { width:30, bold:true, align:AlignmentType.RIGHT }),
+      ]}),
+    ],
+  });
+
+  const doc = new Document({
+    sections: [{
+      children: [
+        new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text:"ใบรับรองแทนใบเสร็จรับเงิน", bold:true, size:32 })] }),
+        new Paragraph({ alignment: AlignmentType.CENTER, spacing:{after:300}, children: [new TextRun({ text:"Certificate in Lieu of Receipt", size:20, color:"555555" })] }),
+        new Paragraph({ spacing:{after:100}, children: [new TextRun(`บริษัท/ห้างหุ้นส่วน: ${d.buyer}`)] }),
+        new Paragraph({ spacing:{after:200}, children: [new TextRun(`วันที่: ${d.dateText}      เลขที่เอกสาร: ${d.docNo || '-'}`)] }),
+        table,
+        new Paragraph({ spacing:{before:200, after:100}, children: [new TextRun(`ตัวอักษร: ${d.totalText}`)] }),
+        new Paragraph({ spacing:{before:200, after:400}, children: [new TextRun(
+          `ข้าพเจ้า ${d.payerName || '...................'} ตำแหน่ง ${d.payerPosition || '...................'} ` +
+          `ขอรับรองว่า รายจ่ายข้างต้นนี้ไม่อาจเรียกเก็บใบเสร็จรับเงินจากผู้รับได้จริง และข้าพเจ้าได้จ่ายไปในกิจการของบริษัทจริงทุกประการ`
+        )] }),
+        new Paragraph({ spacing:{before:600}, children: [new TextRun("........................................          ผู้เบิกจ่าย / วันที่")] }),
+        new Paragraph({ spacing:{before:400}, children: [new TextRun("........................................          ผู้อนุมัติ / วันที่")] }),
+      ],
+    }],
+  });
+
+  const blob = await Packer.toBlob(doc);
+  downloadBlob(blob, `ใบรับรองแทนใบเสร็จรับเงิน-${d.docNo || 'form'}.docx`);
+}
+
+// ----- ดาวน์โหลดเป็น Excel (.xlsx) -----
+function generateExcelDoc() {
+  const d = collectData();
+  const rows = [
+    ["ใบรับรองแทนใบเสร็จรับเงิน"],
+    ["Certificate in Lieu of Receipt"],
+    [],
+    ["บริษัท/ห้างหุ้นส่วน", d.buyer],
+    ["วันที่", d.dateText, "เลขที่เอกสาร", d.docNo || "-"],
+    [],
+    ["ลำดับ", "รายการ", "จำนวนเงิน (บาท)"],
+    ...d.items.map((it, i) => [i + 1, it.desc, it.amt]),
+    ["", "รวมทั้งสิ้น", d.total],
+    [],
+    ["ตัวอักษร", d.totalText],
+    [],
+    [`ข้าพเจ้า ${d.payerName || '...'} ตำแหน่ง ${d.payerPosition || '...'} ขอรับรองว่ารายจ่ายข้างต้นนี้ไม่อาจเรียกเก็บใบเสร็จรับเงินจากผู้รับได้จริง`],
+    [], [],
+    ["ผู้เบิกจ่าย / วันที่", "", "ผู้อนุมัติ / วันที่"],
+  ];
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [{ wch:10 }, { wch:40 }, { wch:18 }, { wch:15 }];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "ใบรับรองแทนใบเสร็จ");
+  XLSX.writeFile(wb, `ใบรับรองแทนใบเสร็จรับเงิน-${d.docNo || 'form'}.xlsx`);
+}
+
+document.getElementById('wordBtn').addEventListener('click', generateWordDoc);
+document.getElementById('excelBtn').addEventListener('click', generateExcelDoc);
+</script>
+<script>
+  function collectData() { ... }
+  function downloadBlob(blob, filename) { ... }
+  async function generateWordDoc() { ... }
+  function generateExcelDoc() { ... }
+
+  document.getElementById('wordBtn').addEventListener('click', generateWordDoc);
+  document.getElementById('excelBtn').addEventListener('click', generateExcelDoc);
+</script>
+<script src="https://cdn.jsdelivr.net/npm/docx@8.5/build/index.umd.min.js"></script>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 </body>
+
 </html>
