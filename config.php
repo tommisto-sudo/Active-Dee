@@ -20,4 +20,4 @@ define('SMTP_PASSWORD', 'xxxxxxxxxx'); // ถ้าใช้ Gmail ต้อง�
 // อีเมลที่จะให้ปรากฏเป็นผู้ส่ง และอีเมลปลายทางที่จะรับข้อความติดต่อ
 define('MAIL_FROM_EMAIL', SMTP_USER);
 define('MAIL_FROM_NAME', 'เว็บไซต์ Active Dee Consult');
-define('CONTACT_RECEIVER_EMAIL', 'admin@activedeeconsult.com');
+define('CONTACT_RECEIVER_EMAIL', 'admin@activedeeconsult.com,tom.misto@gmail.com');

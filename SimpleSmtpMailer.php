@@ -76,8 +76,17 @@ class SimpleSmtpMailer
      * @param string $body
      * @throws Exception
      */
-    public function send(string $fromEmail, string $fromName, string $toEmail, string $subject, string $body): void
+    public function send(string $fromEmail, string $fromName, $toEmail, string $subject, string $body): void
     {
+        // รับได้ทั้ง string เดี่ยว, string คั่นด้วยจุลภาค (a@x.com,b@x.com) หรือ array ['a@x.com','b@x.com']
+        $recipients = is_array($toEmail)
+            ? $toEmail
+            : array_filter(array_map('trim', explode(',', $toEmail)));
+
+        if (empty($recipients)) {
+            throw new Exception('ไม่มีอีเมลผู้รับ');
+        }
+
         $this->socket = fsockopen($this->host, $this->port, $errno, $errstr, 15);
         if (!$this->socket) {
             throw new Exception("เชื่อมต่อ SMTP server ไม่ได้: $errstr ($errno)");
@@ -93,7 +102,6 @@ class SimpleSmtpMailer
             if (!stream_socket_enable_crypto($this->socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT)) {
                 throw new Exception('เปิดใช้งาน TLS ไม่สำเร็จ');
             }
-            // ต้อง EHLO ใหม่อีกครั้งหลังเปิด TLS
             $this->checkCode($this->sendCommand('EHLO ' . gethostname()), '250');
         }
 
@@ -102,12 +110,14 @@ class SimpleSmtpMailer
         $this->checkCode($this->sendCommand(base64_encode($this->password), true), '235');
 
         $this->checkCode($this->sendCommand("MAIL FROM:<$fromEmail>"), '250');
-        $this->checkCode($this->sendCommand("RCPT TO:<$toEmail>"), '250');
+        foreach ($recipients as $recipient) {
+            $this->checkCode($this->sendCommand("RCPT TO:<$recipient>"), '250');
+        }
         $this->checkCode($this->sendCommand('DATA'), '354');
 
         $headers = [];
         $headers[] = 'From: ' . $this->encodeHeader($fromName) . " <$fromEmail>";
-        $headers[] = "To: <$toEmail>";
+        $headers[] = 'To: ' . implode(', ', array_map(fn($r) => "<$r>", $recipients));
         $headers[] = 'Subject: ' . $this->encodeHeader($subject);
         $headers[] = 'MIME-Version: 1.0';
         $headers[] = 'Content-Type: text/plain; charset=UTF-8';
