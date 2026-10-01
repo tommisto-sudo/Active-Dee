@@ -683,3 +683,20 @@ nav.links .caret{font-size:.62rem; margin-left:4px; opacity:.6;}
   nav.links .sub a{border-top:none; padding:9px 12px; font-size:.85rem; color:var(--muted);}
   nav.links .caret{display:none;}
 }
+#docSheet{
+    background:#fff; color:#111; font-family:'Noto Sans Thai',sans-serif;
+    padding:34px 36px; border:1px solid #ddd; font-size:14px; line-height:1.9;
+  }
+.doc-header{
+  display:flex; justify-content:space-between; align-items:flex-start;
+  gap:20px; margin-bottom:20px; flex-wrap:wrap;
+}
+#docSheet h1{
+  text-align:left; font-size:1.25rem; margin:0 0 4px; color:#111;
+}
+#docSheet .en-title{text-align:left; font-size:.82rem; color:#555; margin:0;}
+
+.doc-header-right{ text-align:right; white-space:nowrap; }
+.doc-header-right .doc-meta{ font-size:.85rem; margin-bottom:4px; }
+.doc-header-right .doc-meta .lbl{ color:#555; }
+.doc-header-right .doc-meta .val-inline{ font-weight:600; color:#111; margin-left:4px; }

@@ -64,14 +64,6 @@
     padding:0; overflow:hidden;
   }
   .doc-scale{padding:26px;}
-  #docSheet{
-    background:#fff; color:#111; font-family:'Noto Sans Thai',sans-serif;
-    padding:34px 36px; border:1px solid #ddd; font-size:14px; line-height:1.9;
-  }
-  #docSheet h1{
-    text-align:center; font-size:1.25rem; margin:0 0 4px; color:#111;
-  }
-  #docSheet .en-title{text-align:center; font-size:.82rem; color:#555; margin:0 0 22px;}
   .doc-row{display:flex; gap:6px; margin-bottom:10px; flex-wrap:wrap;}
   .doc-row .lbl{white-space:nowrap; color:#333;}
   .doc-row .val{border-bottom:1px dotted #999; flex:1; min-width:120px; padding-bottom:1px;}
@@ -170,7 +162,23 @@
         <input id="docNo" placeholder="เช่น ADC-0001">
       </div>
     </div>
-
+    <div class="field-row">
+      <div class="field">
+        <label for="buyerType">ประเภท</label>
+        <select id="buyerType">
+          <option value="บริษัทจำกัด">บริษัทจำกัด</option>
+          <option value="ห้างหุ้นส่วนจำกัด">ห้างหุ้นส่วนจำกัด</option>
+          <option value="ห้างหุ้นส่วนสามัญนิติบุคคล">ห้างหุ้นส่วนสามัญนิติบุคคล</option>
+          <option value="ร้าน (บุคคลธรรมดา)">ร้าน (บุคคลธรรมดา)</option>
+          <option value="มูลนิธิ / สมาคม">มูลนิธิ / สมาคม</option>
+          <option value="กิจการ (อื่นๆ)">กิจการ (อื่นๆ)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="taxId">เลขประจำตัวผู้เสียภาษี</label>
+        <input id="taxId" placeholder="0 1055 12345 67 8" maxlength="17">
+      </div>
+    </div>
     <div class="field">
       <label>รายละเอียดรายจ่าย</label>
       <div id="itemRows"></div>
@@ -199,15 +207,19 @@
   <div class="doc-wrap">
     <div class="doc-scale">
       <div id="docSheet">
-        <h1>ใบรับรองแทนใบเสร็จรับเงิน</h1>
-        <div class="en-title">Certificate in Lieu of Receipt</div>
-
-        <div class="doc-row"><span class="lbl">บริษัท/ห้างหุ้นส่วน:</span><span class="val" id="p_buyer">-</span></div>
-        <div class="doc-row">
-          <span class="lbl">วันที่:</span><span class="val" id="p_date" style="max-width:160px;">-</span>
-          <span class="lbl" style="margin-left:20px;">เลขที่เอกสาร:</span><span class="val" id="p_docno" style="max-width:160px;">-</span>
+        <div class="doc-header">
+        <div class="doc-header-left">
+          <h1>ใบรับรองแทนใบเสร็จรับเงิน</h1>
+          <div class="en-title">Certificate in Lieu of Receipt</div>
         </div>
+        <div class="doc-header-right">
+          <div class="doc-meta"><span class="lbl">เลขที่</span> <span class="val-inline" id="p_docno">-</span></div>
+          <div class="doc-meta"><span class="lbl">วันที่ออก</span> <span class="val-inline" id="p_date">-</span></div>
+        </div>
+      </div>
 
+<div class="doc-row"><span class="lbl">ชื่อกิจการ:</span><span class="val" id="p_buyer">-</span>(ผู้ซื้อ / ผู้รับบริการ)<span class="lbl" style="margin-left:8px;" id="p_buyerTypeWrap">(<span id="p_buyerType">-</span>)</span></div>
+<div class="doc-row"><span class="lbl">เลขประจำตัวผู้เสียภาษี:</span><span class="val" id="p_taxId">-</span></div>
         <table class="doc-table">
           <thead>
             <tr><th style="width:50px;">ลำดับ</th><th>รายการ</th><th style="width:140px;">จำนวนเงิน (บาท)</th></tr>
@@ -313,7 +325,7 @@
     const row = document.createElement('div');
     row.className = 'item-row';
     row.innerHTML = `
-      <input type="text" placeholder="รายการ เช่น ค่าจอดรถ" class="item-desc" value="${desc}">
+      <input type="text" placeholder="รายการ เช่น ค่าขนส่ง" class="item-desc" value="${desc}">
       <input type="number" placeholder="จำนวนเงิน" class="item-amt" step="0.01" min="0" value="${amount}">
       <button type="button" class="item-remove" title="ลบรายการนี้">&times;</button>
     `;
@@ -376,6 +388,8 @@
 
   function renderDoc() {
     document.getElementById('p_buyer').textContent = document.getElementById('buyerName').value || '-';
+    document.getElementById('p_buyerType').textContent = document.getElementById('buyerType').value || '-';
+    document.getElementById('p_taxId').textContent = document.getElementById('taxId').value || '-';
     document.getElementById('p_date').textContent = formatDateThai(document.getElementById('docDate').value);
     document.getElementById('p_docno').textContent = document.getElementById('docNo').value || '-';
     document.getElementById('p_payer').textContent = document.getElementById('payerName').value || '...................';
@@ -394,7 +408,24 @@
     document.getElementById('p_total').textContent = total.toLocaleString('th-TH', {minimumFractionDigits:2});
     document.getElementById('p_totalText').textContent = bahtText(total);
   }
+  function formatTaxId(value) {
+    const digits = value.replace(/\D/g, '').slice(0, 13);
+    const groups = [1, 4, 5, 2, 1];
+    let result = '';
+    let pos = 0;
+    for (const len of groups) {
+      if (pos >= digits.length) break;
+      result += (result ? ' ' : '') + digits.slice(pos, pos + len);
+      pos += len;
+    }
+    return result;
+  }
 
+  document.getElementById('taxId').addEventListener('input', (e) => {
+    const cursorWasAtEnd = e.target.selectionStart === e.target.value.length;
+    e.target.value = formatTaxId(e.target.value);
+    if (cursorWasAtEnd) e.target.setSelectionRange(e.target.value.length, e.target.value.length);
+  });
   [...document.querySelectorAll('.tool-form input')].forEach(el => el.addEventListener('input', renderDoc));
 
   document.getElementById('printBtn').addEventListener('click', () => window.print());
