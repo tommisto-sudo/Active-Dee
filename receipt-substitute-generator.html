@@ -440,25 +440,26 @@
   const itemRowsEl = document.getElementById('itemRows');
   let itemCount = 0;
 
-  function addItemRow(tdate = '', desc = '', amount = '', notes = '') {
+  function addItemRow(desc = '', tdate = '', amount = '', notes = '') {
     itemCount++;
     const row = document.createElement('div');
     row.className = 'item-row';
     row.innerHTML = `
-    <div class="field">รายการที่ ${itemCount}
-      <input type="text" placeholder="เช่น ค่าขนส่ง" class="item-desc" value="${desc}"></div>
-      <div class="field-row"><div class="field">วันที่<input type="date" placeholder="วัน เดือน ปี" class="item-date" value="${tdate}"></div>
-      <div class="field">จำนวนเงิน<input type="number" placeholder="จำนวนเงิน" class="item-amt" step="0.01" min="0" value="${amount}"></div></div>
-      <div class="field">หมายเหตุ<input type="text" placeholder="หมายเหตุ" class="item-notes" value="${notes}"></div>
-      <div><button type="button" class="item-remove" title="ลบรายการนี้">&times;</button></div>
+    รายการที่ ${itemCount}
+      <input type="text" placeholder="เช่น ค่าขนส่ง" class="item-desc" value="${desc}">
+      วันที่<input type="date" placeholder="วัน เดือน ปี" class="item-date" value="${tdate}">
+      จำนวนเงิน<input type="number" placeholder="จำนวนเงิน" class="item-amt" step="0.01" min="0" value="${amount}">
+      หมายเหตุ<input type="text" placeholder="หมายเหตุ" class="item-notes" value="${notes}">
+      <button type="button" class="item-remove" title="ลบรายการนี้">&times;</button>
 
     `;
+    
     row.querySelector('.item-date').addEventListener('input', renderDoc);
     row.querySelector('.item-desc').addEventListener('input', renderDoc);
     row.querySelector('.item-amt').addEventListener('input', renderDoc);
     row.querySelector('.item-notes').addEventListener('input', renderDoc);
     row.querySelector('.item-remove').addEventListener('click', () => {
-      row.remove();
+    row.remove();
       renderDoc();
     });
     itemRowsEl.appendChild(row);
@@ -550,20 +551,49 @@ const shot_months = [
     document.getElementById('p_position').textContent = document.getElementById('payerPosition').value || '...................';
     document.getElementById('p_approver').textContent = document.getElementById('approverName').value || '...................';
 
+    const today = new Date().toISOString().split('T')[0];
     const rows = [...itemRowsEl.querySelectorAll('.item-row')];
     let total = 0;
     const tbody = document.getElementById('p_items');
     tbody.innerHTML = rows.map((row, i) => {
-      const tdate = row.querySelector('.item-date').value ? formatDateThai(row.querySelector('.item-date').value) : '-';
       const desc = row.querySelector('.item-desc').value || '-';
       const amt = parseFloat(row.querySelector('.item-amt').value) || 0;
       const notes = row.querySelector('.item-notes').value || '-';
+      const tdate = row.querySelector('.item-date').value ? row.querySelector('.item-date').value : today;
       total += amt;
       return `<tr><td>${i + 1}</td><td>${tdate}</td><td>${desc}</td><td class="amt">${amt.toLocaleString('th-TH', {minimumFractionDigits:2})}</td><td>${notes}</td></tr>`;
     }).join('') || '<tr><td colspan="3" style="text-align:center;color:#999;">ยังไม่มีรายการ</td></tr>';
 
     document.getElementById('p_total').textContent = total.toLocaleString('th-TH', {minimumFractionDigits:2});
     document.getElementById('p_totalText').textContent = bahtText(total);
+  }
+
+ [...document.querySelectorAll('.tool-form input, .tool-form select, .tool-form textarea')].forEach(el => {
+  el.addEventListener('input', renderDoc);
+  el.addEventListener('change', renderDoc);
+});
+
+document.getElementById('printBtn').addEventListener('click', printInNewTab);
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    document.querySelectorAll('.tool-form input').forEach(el => el.value = '');
+    itemRowsEl.innerHTML = '';
+    addItemRow();
+    renderDoc();
+  });
+
+  // เริ่มต้นด้วย 1 แถวรายการ และวันที่วันนี้
+  addItemRow();
+  document.getElementById('docDate').valueAsDate = new Date();
+  renderDoc();
+function printInNewTab() {
+  const styleTag = document.querySelector('style').outerHTML;
+  const docHtml = document.getElementById('docSheet').outerHTML;
+
+  const printWindow = window.open('', '_blank');
+  if (!printWindow) {
+    alert('เบราว์เซอร์บล็อกการเปิดแท็บใหม่ กรุณาอนุญาต pop-up สำหรับเว็บนี้แล้วลองใหม่');
+    return;
   }
   function formatTaxId(value) {
     const digits = value.replace(/\D/g, '').slice(0, 13);
@@ -583,21 +613,7 @@ const shot_months = [
     e.target.value = formatTaxId(e.target.value);
     if (cursorWasAtEnd) e.target.setSelectionRange(e.target.value.length, e.target.value.length);
   });
- [...document.querySelectorAll('.tool-form input, .tool-form select, .tool-form textarea')].forEach(el => {
-  el.addEventListener('input', renderDoc);
-  el.addEventListener('change', renderDoc);
-});
-document.getElementById('printBtn').addEventListener('click', printInNewTab);
 
-function printInNewTab() {
-  const styleTag = document.querySelector('style').outerHTML;
-  const docHtml = document.getElementById('docSheet').outerHTML;
-
-  const printWindow = window.open('', '_blank');
-  if (!printWindow) {
-    alert('เบราว์เซอร์บล็อกการเปิดแท็บใหม่ กรุณาอนุญาต pop-up สำหรับเว็บนี้แล้วลองใหม่');
-    return;
-  }
 printWindow.document.write(`
 <!DOCTYPE html>
 <html lang="th">
@@ -650,25 +666,16 @@ printWindow.document.write(`
   };
 }
 
-  document.getElementById('resetBtn').addEventListener('click', () => {
-    document.querySelectorAll('.tool-form input').forEach(el => el.value = '');
-    itemRowsEl.innerHTML = '';
-    addItemRow();
-    renderDoc();
-  });
 
-  // เริ่มต้นด้วย 1 แถวรายการ และวันที่วันนี้
-  addItemRow();
-  document.getElementById('docDate').valueAsDate = new Date();
-  renderDoc();
   // ----- รวมข้อมูลจากฟอร์ม (ใช้ร่วมกันทั้ง preview / Word / Excel) -----
 function collectData() {
+  const today = new Date().toISOString().split('T')[0];
   const rows = [...itemRowsEl.querySelectorAll('.item-row')];
   const items = rows.map(row => ({
-    tdate: row.querySelector('.item-date').value || '-',
     desc: row.querySelector('.item-desc').value || '-',
     amt: parseFloat(row.querySelector('.item-amt').value) || 0,
     notes: row.querySelector('.item-notes').value || '-',
+    tdate: row.querySelector('.item-date').value ? row.querySelector('.item-date').value : today,
   }));
   const total = items.reduce((sum, it) => sum + it.amt, 0);
   return {
@@ -826,6 +833,8 @@ document.getElementById('excelBtn').addEventListener('click', generateExcelDoc);
 
   document.getElementById('wordBtn').addEventListener('click', generateWordDoc);
   document.getElementById('excelBtn').addEventListener('click', generateExcelDoc);
+
+
 </script>
 <script src="https://cdn.jsdelivr.net/npm/docx@8.5/build/index.umd.min.js"></script>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
