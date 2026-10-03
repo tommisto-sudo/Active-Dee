@@ -414,13 +414,20 @@ section.blk.cream{background:var(--cream);}
 /* ===== PAGE HEAD ===== */
 .pagehead{
   background:linear-gradient(165deg,#EAF4FC,var(--paper));
-  padding:50px 0 44px; border-bottom:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding:28px 0 26px; /* ลดจาก 50px → 28px */
 }
 .pagehead h1{
   font-size:clamp(1.65rem,3.6vw,2.35rem); color:var(--primary-ink);
-  margin:12px 0 10px; font-weight:700; line-height:1.35;
+  font-weight:700; line-height:1.35;
+  margin:6px 0 4px; /* ลดช่องว่างบน-ล่าง margin:12px 0 10px; */
 }
-.pagehead p{color:var(--muted); margin:0; max-width:60ch;}
+.pagehead p{color:var(--muted);
+  max-width:60ch;
+  margin:0;
+  margin-top:6px; /* ลดช่องว่าง */
+  font-size:.92rem; /* ให้ดูเนียนขึ้น */
+}
 .crumb{font-size:.82rem; color:var(--muted);}
 .crumb a{color:var(--primary-deep);}
 .crumb i{font-style:normal; margin:0 7px; color:var(--gold-deep);}
@@ -770,4 +777,86 @@ nav.links .caret{font-size:.62rem; margin-left:4px; opacity:.6;}
   flex-shrink:0; width:28px; height:28px; border-radius:50%;
   background:var(--primary); color:#fff; font-weight:700; font-size:.85rem;
   display:flex; align-items:center; justify-content:center;
+}
+.doc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.doc-header-left {
+  display: flex;
+  align-items: center;   /* 🔥 ทำให้โลโก้และข้อความอยู่ระดับเดียวกัน */
+  gap: 20px;
+}
+
+.doc-logo {
+  max-width: 120px;
+  max-height: 120px;
+}
+
+.doc-title h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  line-height: 1.2;
+}
+
+.doc-title .en-title {
+  margin-top: 4px;
+  font-size: 1rem;
+  color: #555;
+}
+.save-inline {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* ระยะห่างระหว่าง checkbox กับข้อความ */
+  font-size: 0.95rem;
+}
+/* ===== TOOL GRID ===== */
+.tool-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+  gap:24px;
+  margin:40px 0;
+}
+
+/* ===== TOOL CARD ===== */
+.tool-card{
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:28px 24px;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+  box-shadow:var(--shadow);
+  transition:transform .2s, box-shadow .2s;
+}
+
+.tool-card:hover{
+  transform:translateY(-6px);
+  box-shadow:var(--shadow-lg);
+}
+
+/* ===== ICON ===== */
+.tool-ic{
+  width:54px;
+  height:54px;
+  border-radius:14px;
+  background:linear-gradient(140deg, var(--primary), var(--primary-deep));
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.45rem;
+}
+
+/* ===== TITLE ===== */
+.tool-title{
+  font-size:1.05rem;
+  font-weight:600;
+  color:var(--primary-ink);
 }

@@ -11,10 +11,15 @@
 <link rel="stylesheet" href="style.css">
 <style>
   /* ===== ส่วนเฉพาะของเครื่องมือนี้ (ไม่กระทบหน้าอื่น) ===== */
-  .tool-wrap{
-    max-width:1160px; margin:0 auto; padding:40px 20px 90px;
-    display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start;
-  }
+.tool-wrap{
+  max-width:1160px;
+  margin:0 auto;
+  padding:40px 20px 90px;
+  display:grid;
+  grid-template-columns:35% 65%;
+  gap:16px;
+  align-items:start;
+}
   @media (max-width:960px){ .tool-wrap{grid-template-columns:1fr;} }
 
   .tool-form{
@@ -40,6 +45,21 @@
   .item-row{
     display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px; align-items:center;
   }
+  .item-row {
+  border: 1px solid #d0d7e1;      /* เทาอ่อนโทนเดิม */
+  background: #f7faff;            /* ฟ้าอ่อนมาก ๆ */
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+
+  /* เงาเบา ๆ */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+
   .item-row input{
     border:1px solid var(--line); background:var(--paper); padding:9px 10px;
     border-radius:var(--radius-sm); font-family:inherit; font-size:.9rem;
@@ -114,15 +134,16 @@
       </span>
     </a>
 <nav class="links" id="navLinks">
-  <a class="current" href="index.html">หน้าแรก</a>
+  <a href="index.html">หน้าแรก</a>
   <a href="aboutus.html">เกี่ยวกับเรา</a>
   <a href="services.html">บริการ</a>
   <a href="packages.html">แพ็กเกจราคา</a>
   <a href="blog.html">บทความและข่าวสาร</a>
   <span class="has-sub">
-    <a href="#">เครื่องมือ<span class="caret">&#9660;</span></a>
+    <a href="tools.html">เครื่องมือ<span class="caret">&#9660;</span></a>
     <span class="sub">
-      <a href="receipt-substitute-generator.html">สร้างใบรับรองแทนใบเสร็จรับเงิน</a>
+      <a class="current" href="receipt-substitute-generator.html">สร้างใบรับรองแทนใบเสร็จรับเงิน</a>
+      <a href="receipt-generator.html">สร้างใบสำคัญรับเงิน</a>
     </span>
   </span>
   <a href="contactus.html">ติดต่อเรา</a>
@@ -185,7 +206,11 @@
       <input id="addressName" placeholder="(ไม่จำเป็นต้องกรอกก็ได้) เช่น 123/45 หมู่บ้านตัวอย่าง ถนนตัวอย่าง แขวงตัวอย่าง เขตตัวอย่าง กรุงเทพมหานคร 10110">
     </div>
     <div class="field">
-      <label>รายละเอียดรายจ่าย</label>
+    <label for="logoFile">โลโก้</label>
+    <input type="file" id="logoFile" accept="image/*">
+    </div>
+    <div class="field">
+      <label for="itemRows">รายละเอียดรายจ่าย</label>
       <div id="itemRows"></div>
       <button type="button" class="add-item-btn" id="addItemBtn">+ เพิ่มรายการ</button>
     </div>
@@ -203,6 +228,12 @@
       <label for="approverName">ชื่อผู้อนุมัติ</label>
       <input id="approverName" placeholder="ชื่อ-นามสกุล">
     </div>
+    <div>
+      <label class="save-inline">
+      <input type="checkbox" id="saveLocalChk">
+      จำข้อมูลกิจการไว้ในเครื่องนี้
+      </label>
+    </div>
     <div class="action-row">
       <button type="button" class="btn btn-primary" id="printBtn">พิมพ์ / บันทึกเป็น PDF</button>
       <button type="button" class="btn btn-ghost" id="wordBtn">ดาวน์โหลด Word (.docx)</button>
@@ -215,16 +246,22 @@
   <div class="doc-wrap">
     <div class="doc-scale">
       <div id="docSheet">
-        <div class="doc-header">
-        <div class="doc-header-left">
-          <h1>ใบรับรองแทนใบเสร็จรับเงิน</h1>
-          <div class="en-title">Certificate in Lieu of Receipt</div>
-        </div>
-        <div class="doc-header-right">
-          <div class="doc-meta"><span class="lbl">เลขที่</span> <span class="val-inline" id="p_docno">-</span></div>
-          <div class="doc-meta"><span class="lbl">วันที่ออก</span> <span class="val-inline" id="p_date">-</span></div>
-        </div>
-      </div>
+<div class="doc-header">
+  <div class="doc-header-left">
+    <img id="p_logo" class="doc-logo" src="" alt="">
+
+    <div class="doc-title">
+      <h1>ใบรับรองแทนใบเสร็จรับเงิน</h1>
+      <div class="en-title">Certificate in Lieu of Receipt</div>
+    </div>
+  </div>
+
+  <div class="doc-header-right">
+    <div class="doc-meta"><span class="lbl">เลขที่</span> <span class="val-inline" id="p_docno">-</span></div>
+    <div class="doc-meta"><span class="lbl">วันที่ออก</span> <span class="val-inline" id="p_date">-</span></div>
+  </div>
+</div>
+
 
 <div class="doc-row"><span class="lbl">ชื่อกิจการ:</span><span class="val" id="p_buyer">-</span>(ผู้ซื้อ / ผู้รับบริการ)<span class="lbl" style="margin-left:8px;" id="p_buyerTypeWrap">(<span id="p_buyerType">-</span>)</span></div>
 <div class="doc-row"><span class="lbl">เลขประจำตัวผู้เสียภาษี:</span><span class="val" id="p_taxId">-</span></div>
@@ -254,10 +291,16 @@
         <div class="sign-area">
           <div>
             <div class="sign-line"></div>
+            <div class="sign-cap">
+              <span class="sign-name" id="p_payerSign"></span>
+            </div>
             <div class="sign-cap">ผู้เบิกจ่าย / วันที่</div>
           </div>
           <div>
             <div class="sign-line"></div>
+            <div class="sign-cap">
+              <span class="sign-name" id="p_approverSign"></span>
+            </div>
             <div class="sign-cap">ผู้อนุมัติ / วันที่</div>
           </div>
         </div>
@@ -420,8 +463,32 @@
   <a class="float-btn fb" href="https://www.facebook.com/profile.php?id=61593271767709" target="_blank" rel="noopener" aria-label="ไปที่ Facebook">&#128241;</a>
   <a class="float-btn top" href="#" id="toTop" aria-label="กลับขึ้นบน">&#8593;</a>
 </div>
-
 <script>
+// =========================
+// ตัวแปรหลักของระบบ
+// =========================
+let logoBase64 = "";let 
+logoArrayBuffer = null;   // ⭐ เพิ่มบรรทัดนี้
+const logoFile = document.getElementById('logoFile');
+const pLogo = document.getElementById('p_logo');
+
+// =========================
+// อ่านไฟล์โลโก้ → แปลง Base64 → ใส่ใน preview
+// =========================
+logoFile.addEventListener('change', () => {
+  const file = logoFile.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    logoBase64 = reader.result;   // เก็บ Base64 ไว้ใช้ตอน Export
+    logoArrayBuffer = base64ToArrayBuffer(logoBase64);   // ⭐ เพิ่มบรรทัดนี้ Base64 → ArrayBuffer
+    pLogo.src = logoBase64;       // แสดงใน preview
+    renderDoc();                  // อัปเดตเอกสาร
+  };
+  reader.readAsDataURL(file);
+});
+
   const navToggle = document.getElementById('navToggle');
   const navLinks = document.getElementById('navLinks');
   navToggle.addEventListener('click', () => {
@@ -432,38 +499,56 @@
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
-</script>
 
-<script>
+// =========================
+// ฟังก์ชันแปลง Base64 → ArrayBuffer
+// =========================
+function base64ToArrayBuffer(base64) {
+  const binary = atob(base64.split(',')[1]);
+  const len = binary.length;
+  const buffer = new Uint8Array(len);
+  for (let i = 0; i < len; i++) {
+    buffer[i] = binary.charCodeAt(i);
+  }
+  return buffer;
+}
+
   // ===================== เครื่องมือสร้างใบรับรองแทนใบเสร็จรับเงิน =====================
-
   const itemRowsEl = document.getElementById('itemRows');
   let itemCount = 0;
+function addItemRow(desc = '', tdate = '', amount = '', notes = '') {
+  itemCount++;
 
-  function addItemRow(desc = '', tdate = '', amount = '', notes = '') {
-    itemCount++;
-    const row = document.createElement('div');
-    row.className = 'item-row';
-    row.innerHTML = `
-    รายการที่ ${itemCount}
-      <input type="text" placeholder="เช่น ค่าขนส่ง" class="item-desc" value="${desc}">
-      วันที่<input type="date" placeholder="วัน เดือน ปี" class="item-date" value="${tdate}">
-      จำนวนเงิน<input type="number" placeholder="จำนวนเงิน" class="item-amt" step="0.01" min="0" value="${amount}">
-      หมายเหตุ<input type="text" placeholder="หมายเหตุ" class="item-notes" value="${notes}">
-      <button type="button" class="item-remove" title="ลบรายการนี้">&times;</button>
-
-    `;
-    
-    row.querySelector('.item-date').addEventListener('input', renderDoc);
-    row.querySelector('.item-desc').addEventListener('input', renderDoc);
-    row.querySelector('.item-amt').addEventListener('input', renderDoc);
-    row.querySelector('.item-notes').addEventListener('input', renderDoc);
-    row.querySelector('.item-remove').addEventListener('click', () => {
-    row.remove();
-      renderDoc();
-    });
-    itemRowsEl.appendChild(row);
+  // 🔥 ตั้งค่า default เป็นวันที่วันนี้
+  if (!tdate) {
+    tdate = new Date().toISOString().split('T')[0];
   }
+
+  const row = document.createElement('div');
+  row.className = 'item-row';
+  row.innerHTML = `
+    <strong>รายการที่ ${itemCount}</strong>
+    <input type="text" placeholder="เช่น ค่าขนส่ง" class="item-desc" value="${desc}">
+    วันที่<input type="date" class="item-date" value="${tdate}">
+    จำนวนเงิน<input type="number" class="item-amt" step="0.01" min="0" value="${amount}">
+    หมายเหตุ<input type="text" class="item-notes" value="${notes}">
+    <button type="button" class="item-remove" title="ลบรายการนี้">&times;</button>
+  `;
+  
+  row.querySelectorAll('input').forEach(input => {
+    input.addEventListener('input', renderDoc);
+  });
+
+  row.querySelector('.item-remove').addEventListener('click', () => {
+    row.remove();
+    renderDoc();
+  });
+
+  itemRowsEl.appendChild(row);
+  renderDoc();
+}
+
+
 
   document.getElementById('addItemBtn').addEventListener('click', () => addItemRow());
 
@@ -549,8 +634,9 @@ const shot_months = [
     document.getElementById('p_docno').textContent = document.getElementById('docNo').value || '-';
     document.getElementById('p_payer').textContent = document.getElementById('payerName').value || '...................';
     document.getElementById('p_position').textContent = document.getElementById('payerPosition').value || '...................';
-    document.getElementById('p_approver').textContent = document.getElementById('approverName').value || '...................';
-
+    //document.getElementById('p_approver').textContent = document.getElementById('approverName').value || '...................';
+    document.getElementById('p_payerSign').textContent = document.getElementById('payerName').value || '';
+    document.getElementById('p_approverSign').textContent = document.getElementById('approverName').value || '';
     const today = new Date().toISOString().split('T')[0];
     const rows = [...itemRowsEl.querySelectorAll('.item-row')];
     let total = 0;
@@ -566,7 +652,33 @@ const shot_months = [
 
     document.getElementById('p_total').textContent = total.toLocaleString('th-TH', {minimumFractionDigits:2});
     document.getElementById('p_totalText').textContent = bahtText(total);
+    saveLocal();
   }
+function saveLocal() {
+  if (!document.getElementById('saveLocalChk').checked) return;
+
+  const data = {
+    buyerName: document.getElementById('buyerName').value,
+    buyerType: document.getElementById('buyerType').value,
+    taxId: document.getElementById('taxId').value,
+    addressName: document.getElementById('addressName').value,
+    payerName: document.getElementById('payerName').value,
+    payerPosition: document.getElementById('payerPosition').value,
+    approverName: document.getElementById('approverName').value,
+    logo: document.getElementById('p_logo').src || '',
+    items: [...itemRowsEl.querySelectorAll('.item-row')].map(row => ({
+      desc: row.querySelector('.item-desc').value,
+      date: row.querySelector('.item-date').value,
+      amt: row.querySelector('.item-amt').value,
+      notes: row.querySelector('.item-notes').value,
+    }))
+  };
+
+  localStorage.setItem('receiptForm', JSON.stringify(data));
+}
+
+
+
 
  [...document.querySelectorAll('.tool-form input, .tool-form select, .tool-form textarea')].forEach(el => {
   el.addEventListener('input', renderDoc);
@@ -575,26 +687,31 @@ const shot_months = [
 
 document.getElementById('printBtn').addEventListener('click', printInNewTab);
 
-  document.getElementById('resetBtn').addEventListener('click', () => {
-    document.querySelectorAll('.tool-form input').forEach(el => el.value = '');
-    itemRowsEl.innerHTML = '';
-    addItemRow();
-    renderDoc();
-  });
+document.getElementById('resetBtn').addEventListener('click', () => {
+  // ล้างทุกช่อง
+  document.querySelectorAll('.tool-form input').forEach(el => el.value = '');
 
-  // เริ่มต้นด้วย 1 แถวรายการ และวันที่วันนี้
+  // ล้างรายการ
+  itemRowsEl.innerHTML = '';
   addItemRow();
+
+  // 🔥 ตั้งวันที่วันนี้กลับมาใหม่
   document.getElementById('docDate').valueAsDate = new Date();
+
   renderDoc();
+});
+
+
 function printInNewTab() {
   const styleTag = document.querySelector('style').outerHTML;
   const docHtml = document.getElementById('docSheet').outerHTML;
-
+  const logoHtml = pLogo.src ? `<img src="${pLogo.src}" style="max-width:120px; max-height:120px;">` : '';
   const printWindow = window.open('', '_blank');
   if (!printWindow) {
     alert('เบราว์เซอร์บล็อกการเปิดแท็บใหม่ กรุณาอนุญาต pop-up สำหรับเว็บนี้แล้วลองใหม่');
     return;
   }
+
   function formatTaxId(value) {
     const digits = value.replace(/\D/g, '').slice(0, 13);
     const groups = [1, 4, 5, 2, 1];
@@ -608,12 +725,17 @@ function printInNewTab() {
     return result;
   }
 
+
   document.getElementById('taxId').addEventListener('input', (e) => {
     const cursorWasAtEnd = e.target.selectionStart === e.target.value.length;
     e.target.value = formatTaxId(e.target.value);
     if (cursorWasAtEnd) e.target.setSelectionRange(e.target.value.length, e.target.value.length);
   });
-
+  // เริ่มต้นด้วย 1 แถวรายการ และวันที่วันนี้
+  addItemRow();
+  document.getElementById('docDate').valueAsDate = new Date();
+  renderDoc();
+  
 printWindow.document.write(`
 <!DOCTYPE html>
 <html lang="th">
@@ -649,6 +771,7 @@ printWindow.document.write(`
 </head>
 
 <body>
+  ${logoHtml}
   ${docHtml}
   <footer>
     ใช้กับรายจ่ายเบ็ดเตล็ดที่เรียกใบเสร็จจากผู้รับเงินไม่ได้เท่านั้น ควรแนบหลักฐานการจ่ายเงิน เช่น สลิปโอนเงิน ไว้กับเอกสารฉบับนี้ ถ้าผู้รับเงินยอมลงลายมือชื่อ ให้ใช้ใบสำคัญรับเงินแทน   
@@ -657,9 +780,7 @@ printWindow.document.write(`
 </body>
 </html>
 `);
-
   printWindow.document.close();
-
   printWindow.onload = () => {
     printWindow.focus();
     printWindow.print();
@@ -702,6 +823,15 @@ function downloadBlob(blob, filename) {
 
 // ----- ดาวน์โหลดเป็น Word (.docx) -----
 async function generateWordDoc() {
+let logoImage = null;
+
+if (logoArrayBuffer) {
+  logoImage = new docx.ImageRun({
+    data: logoArrayBuffer,
+    transformation: { width: 180, height: 60 },
+  });
+}
+
   const { Document, Packer, Paragraph, TextRun, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle } = docx;
   const d = collectData();
 
@@ -750,7 +880,14 @@ async function generateWordDoc() {
     borders: { top:noBorder, bottom:noBorder, left:noBorder, right:noBorder, insideHorizontal:noBorder, insideVertical:noBorder },
     rows: [ new TableRow({ children: [
       new TableCell({
-        width: { size: 60, type: WidthType.PERCENTAGE },
+        width: { size: 10, type: WidthType.PERCENTAGE },
+        borders: { top:noBorder, bottom:noBorder, left:noBorder, right:noBorder },
+        children: logoImage
+        ? [new Paragraph({ children: [logoImage],alignment: AlignmentType.LEFT, spacing:{after:120} })] 
+        : [],   // ⭐ ถ้าไม่มีรูป → ไม่แสดงอะไรเลย
+      }),
+      new TableCell({
+        width: { size: 50, type: WidthType.PERCENTAGE },
         borders: { top:noBorder, bottom:noBorder, left:noBorder, right:noBorder },
         children: [
           new Paragraph({ children: [new TextRun({ text:"ใบรับรองแทนใบเสร็จรับเงิน", bold:true, size:32 })] }),
@@ -767,7 +904,6 @@ async function generateWordDoc() {
       }),
     ]})],
   });
-
   const doc = new Document({
     sections: [{
       children: [
@@ -797,26 +933,33 @@ async function generateWordDoc() {
 
 // ----- ดาวน์โหลดเป็น Excel (.xlsx) -----
 function generateExcelDoc() {
+  const logoHtml = logoBase64
+  ? `<img src="${logoBase64}" style="width:150px;">`
+  : "";
   const d = collectData();
-  const rows = [
-    ["ใบรับรองแทนใบเสร็จรับเงิน", "", "", `เลขที่ ${d.docNo || '-'}`],
-    ["Certificate in Lieu of Receipt", "", "", `วันที่ออก ${d.dateText}`],
-    [],
-    ["ชื่อกิจการ", d.buyer, "ประเภท", d.buyerType || "-"],
-    ["เลขประจำตัวผู้เสียภาษี", d.taxId || "-"],
-    [],
-    ["ลำดับ", "วันที่", "รายการ", "จำนวนเงิน (บาท)", "หมายเหตุ"],
-    ...d.items.map((it, i) => [i + 1, it.tdate, it.desc, it.amt, it.notes]),
-    ["", "รวมทั้งสิ้น", d.total],
-    [],
-    ["ตัวอักษร", d.totalText],
-    [],
-    [`ข้าพเจ้า ${d.payerName || '...'} ตำแหน่ง ${d.payerPosition || '...'} ขอรับรองว่ารายจ่ายข้างต้นนี้ไม่อาจเรียกเก็บใบเสร็จรับเงินจากผู้รับได้จริง`],
-    [], [],
-    ["ผู้เบิกจ่าย / วันที่", "", "ผู้อนุมัติ / วันที่"],
-  ];
+const rows = [
+  [logoHtml, "", "", `เลขที่ ${d.docNo || '-'}`],
+  ["ใบรับรองแทนใบเสร็จรับเงิน", "", "", ""],
+  ["Certificate in Lieu of Receipt", "", "", `วันที่ออก ${d.dateText}`],
+  [],
+  ["ชื่อกิจการ", d.buyer, "ประเภท", d.buyerType || "-"],
+  ["เลขประจำตัวผู้เสียภาษี", d.taxId || "-"],
+  [],
+  ["ลำดับ", "วันที่", "รายการ", "จำนวนเงิน (บาท)", "หมายเหตุ"],
+  ...d.items.map((it, i) => [i + 1, it.tdate, it.desc, it.amt, it.notes]),
+  ["", "", "รวมทั้งสิ้น", d.total],
+  [],
+  ["ตัวอักษร", d.totalText],
+  [],
+  [`ข้าพเจ้า ${d.payerName || '...'} ตำแหน่ง ${d.payerPosition || '...'} ขอรับรองว่ารายจ่ายข้างต้นนี้ไม่อาจเรียกเก็บใบเสร็จรับเงินจากผู้รับได้จริง`],
+  [], [],
+  ["ผู้เบิกจ่าย / วันที่", "", "ผู้อนุมัติ / วันที่"],
+];
+
   const ws = XLSX.utils.aoa_to_sheet(rows);
   ws['!cols'] = [{ wch:10 }, { wch:40 }, { wch:30 }, { wch:20 }, { wch:20 }];
+  ws["A1"].t = "s";     // string
+ws["A1"].h = logoHtml; // HTML content
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "ใบรับรองแทนใบเสร็จ");
   XLSX.writeFile(wb, `ใบรับรองแทนใบเสร็จรับเงิน-${d.docNo || 'form'}.xlsx`);
@@ -824,15 +967,38 @@ function generateExcelDoc() {
 
 document.getElementById('wordBtn').addEventListener('click', generateWordDoc);
 document.getElementById('excelBtn').addEventListener('click', generateExcelDoc);
-</script>
-<script>
-  function collectData() { ... }
-  function downloadBlob(blob, filename) { ... }
-  async function generateWordDoc() { ... }
-  function generateExcelDoc() { ... }
+// 🔥 เริ่มต้นหน้าเว็บ
+const saved = localStorage.getItem('receiptForm');
+if (saved) {
+  const d = JSON.parse(saved);
 
-  document.getElementById('wordBtn').addEventListener('click', generateWordDoc);
-  document.getElementById('excelBtn').addEventListener('click', generateExcelDoc);
+  document.getElementById('saveLocalChk').checked = true;
+
+  document.getElementById('buyerName').value = d.buyerName || '';
+  document.getElementById('buyerType').value = d.buyerType || '';
+  document.getElementById('taxId').value = d.taxId || '';
+  document.getElementById('addressName').value = d.addressName || '';
+  document.getElementById('payerName').value = d.payerName || '';
+  document.getElementById('payerPosition').value = d.payerPosition || '';
+  document.getElementById('approverName').value = d.approverName || '';
+
+  if (d.logo) document.getElementById('p_logo').src = d.logo;
+
+  itemRowsEl.innerHTML = '';
+  d.items.forEach(it => addItemRow(it.desc, it.date, it.amt, it.notes));
+
+  if (d.docDate) {
+    document.getElementById('docDate').value = d.docDate;
+  } else {
+    document.getElementById('docDate').valueAsDate = new Date();
+  }
+  renderDoc();
+} else {
+  // ไม่มีข้อมูล → ตั้งค่าเริ่มต้น
+  addItemRow();
+  document.getElementById('docDate').valueAsDate = new Date();
+  renderDoc();
+}
 
 
 </script>
