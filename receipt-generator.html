@@ -4,22 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>สร้างใบสำคัญรับเงิน | Active Dee Consult</title>
-<meta name="description" content="เครื่องมือสร้างใบสำคัญรับเงินฟรี กรอกข้อมูลแล้วพิมพ์หรือบันทึกเป็น PDF ได้ทันที">
+<meta name="description" content="เครื่องมือสร้างใบสำคัญรับเงินฟรี กรอกข้อมูลแล้วพิมพ์หรือบันทึกเป็น PDF/Word/Excel ได้ทันที">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
   /* ===== ส่วนเฉพาะของเครื่องมือนี้ (ไม่กระทบหน้าอื่น) ===== */
-.tool-wrap{
-  max-width:1160px;
-  margin:0 auto;
-  padding:40px 20px 90px;
-  display:grid;
-  grid-template-columns:35% 65%;
-  gap:16px;
-  align-items:start;
-}
+  .tool-wrap{
+    max-width:1160px; margin:0 auto; padding:40px 20px 90px;
+    display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start;
+  }
   @media (max-width:960px){ .tool-wrap{grid-template-columns:1fr;} }
 
   .tool-form{
@@ -29,37 +24,27 @@
   @media (max-width:960px){ .tool-form{position:static;} }
   .tool-form h2{margin:0 0 6px; color:var(--primary-ink); font-size:1.2rem;}
   .tool-form .hint{margin:0 0 22px; font-size:.85rem; color:var(--muted);}
+  .tool-form .group-title{
+    font-size:.85rem; font-weight:700; color:var(--primary-deep);
+    margin:26px 0 14px; padding-top:18px; border-top:1px dashed var(--line);
+  }
+  .tool-form .group-title:first-of-type{margin-top:0; padding-top:0; border-top:none;}
 
   .field-row{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
   .field{margin-bottom:16px;}
   .field label{display:block; font-size:.85rem; font-weight:600; margin-bottom:6px; color:var(--text);}
-  .field input, .field textarea{
+  .field input, .field textarea, .field select{
     width:100%; border:1px solid var(--line); background:var(--paper);
     padding:10px 12px; border-radius:var(--radius-sm); font-family:inherit; font-size:.92rem; color:var(--text);
   }
-  .field input:focus, .field textarea:focus{
+  .field input:focus, .field textarea:focus, .field select:focus{
     outline:none; border-color:var(--primary); background:var(--white);
     box-shadow:0 0 0 3px rgba(111,168,220,.18);
   }
 
   .item-row{
-    display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px; align-items:center;
+    display:grid; grid-template-columns:1fr 130px 34px; gap:8px; margin-bottom:8px; align-items:center;
   }
-  .item-row {
-  border: 1px solid #d0d7e1;      /* เทาอ่อนโทนเดิม */
-  background: #f7faff;            /* ฟ้าอ่อนมาก ๆ */
-  padding: 12px;
-  margin-bottom: 12px;
-  border-radius: 6px;
-
-  /* เงาเบา ๆ */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 12px;
-}
-
   .item-row input{
     border:1px solid var(--line); background:var(--paper); padding:9px 10px;
     border-radius:var(--radius-sm); font-family:inherit; font-size:.9rem;
@@ -78,15 +63,40 @@
 
   .action-row{display:flex; gap:10px; margin-top:8px; flex-wrap:wrap;}
 
+  .notice-box{
+    background:#FFF8E6; border:1px solid #F0C971; border-radius:var(--radius-sm);
+    padding:14px 16px; font-size:.84rem; color:#6B5516; margin-bottom:22px; line-height:1.8;
+  }
+
   /* ===== ตัวอย่างเอกสาร ===== */
   .doc-wrap{
     background:var(--white); border:1px solid var(--line); border-radius:var(--radius);
     padding:0; overflow:hidden;
   }
   .doc-scale{padding:26px;}
-  .doc-row{display:flex; gap:6px; margin-bottom:10px; flex-wrap:wrap;}
+  #docSheet{
+    background:#fff; color:#111; font-family:'Noto Sans Thai',sans-serif;
+    padding:34px 36px; border:1px solid #ddd; font-size:14px; line-height:1.9;
+  }
+  .doc-header{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    gap:20px; margin-bottom:20px; padding-bottom:16px; flex-wrap:wrap;
+    border-bottom:2px solid #333;
+  }
+  #docSheet h1{ text-align:left; font-size:1.25rem; margin:0 0 4px; color:#111; }
+  #docSheet .en-title{text-align:left; font-size:.82rem; color:#555; margin:0;}
+  .doc-header-right{ text-align:right; white-space:nowrap; }
+  .doc-header-right .doc-meta{ font-size:.85rem; margin-bottom:4px; }
+  .doc-header-right .doc-meta .lbl{ color:#555; }
+  .doc-header-right .doc-meta .val-inline{ font-weight:600; color:#111; margin-left:4px; }
+
+  .doc-party{ border:1px solid #ddd; border-radius:8px; padding:14px 16px; margin-bottom:14px; }
+  .doc-party .party-title{ font-weight:700; color:#1a1a1a; font-size:.9rem; margin-bottom:8px; }
+  .doc-row{display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap;}
+  .doc-row:last-child{margin-bottom:0;}
   .doc-row .lbl{white-space:nowrap; color:#333;}
   .doc-row .val{border-bottom:1px dotted #999; flex:1; min-width:120px; padding-bottom:1px;}
+
   table.doc-table{width:100%; border-collapse:collapse; margin:18px 0;}
   table.doc-table th, table.doc-table td{
     border:1px solid #999; padding:7px 10px; font-size:.92rem;
@@ -94,16 +104,65 @@
   table.doc-table th{background:#F2F2F2; text-align:left;}
   table.doc-table td.amt{text-align:right; white-space:nowrap;}
   table.doc-table tr.total-row td{font-weight:700; background:#FAFAFA;}
-  .doc-declare{margin:22px 0; font-size:.94rem; line-height:2;}
-  .doc-footer1{margin:22px 0; font-size:.74rem; line-height:2;}
+
   .sign-area{
     display:grid; grid-template-columns:1fr 1fr; gap:30px; margin-top:50px; text-align:center;
   }
   .sign-line{border-bottom:1px dotted #666; height:34px; margin-bottom:8px;}
   .sign-cap{font-size:.88rem; color:#333;}
+  .sign-cap b{display:block; margin-top:3px; font-size:.82rem; color:#555; font-weight:400;}
+
+  /* ===== เนื้อหาความรู้ ===== */
+  .faq-section{
+    max-width:900px; margin:60px auto 0; padding:40px 30px 60px;
+    background-color: rgba(255,255,255,.95); border-radius: var(--radius);
+  }
+  .faq-section h2{ text-align:center; color:var(--primary-ink); font-size:1.6rem; margin:0 0 24px; }
+  .faq-answer-box{
+    background:var(--paper); border-left:4px solid var(--primary);
+    border-radius:var(--radius-sm); padding:22px 26px; margin-bottom:22px;
+  }
+  .faq-answer-box .kicker-label{
+    font-size:.8rem; font-weight:700; color:var(--primary-deep);
+    text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px;
+  }
+  .faq-answer-box p{ margin:0; color:var(--text); line-height:1.9; font-size:.96rem; }
+  .faq-answer-box strong{ color:var(--primary-ink); }
+  .faq-section > p.faq-lead{ color:var(--muted); line-height:1.9; margin:0 0 30px; font-size:.95rem; }
+  .faq-section h3{ color:var(--primary-ink); font-size:1.2rem; margin:0 0 20px; }
+
+  .req-list{ list-style:none; padding:0; margin:20px 0; }
+  .req-list li{
+    position:relative; padding:8px 0 8px 24px; color:var(--text); font-size:.95rem; line-height:1.85;
+  }
+  .req-list li::before{
+    content:""; position:absolute; left:4px; top:17px; width:7px; height:7px;
+    border-radius:50%; background:var(--primary);
+  }
+  .req-list li strong{ color:var(--primary-ink); }
+
+  .doc-cards{ display:flex; flex-direction:column; gap:16px; margin:20px 0; }
+  .doc-card{
+    background:var(--white); border-left:4px solid var(--primary);
+    border-radius:var(--radius-sm); padding:20px 24px; box-shadow:var(--shadow);
+  }
+  .doc-card h4{ margin:0 0 10px; color:var(--primary-ink); font-size:1.02rem; }
+  .doc-card p{ margin:0; color:var(--muted); font-size:.92rem; line-height:1.85; }
+  .doc-card strong{ color:var(--primary-ink); }
+
+  .step-list{ list-style:none; padding:0; margin:20px 0; counter-reset:step; }
+  .step-list li{
+    display:flex; gap:14px; align-items:flex-start; padding:10px 0; font-size:.95rem; color:var(--text); line-height:1.8;
+  }
+  .step-list li::before{
+    counter-increment:step; content:counter(step);
+    flex-shrink:0; width:28px; height:28px; border-radius:50%;
+    background:var(--primary); color:#fff; font-weight:700; font-size:.85rem;
+    display:flex; align-items:center; justify-content:center;
+  }
 
   @media print{
-    header.site, .topbar, footer.site, .floats, .tool-form, .doc-note, .pagehead{display:none !important;}
+    header.site, .topbar, footer.site, .floats, .tool-form, .doc-note, .pagehead, .faq-section{display:none !important;}
     body{background:#fff !important;}
     .tool-wrap{display:block; padding:0; max-width:none;}
     .doc-wrap{border:none; border-radius:0;}
@@ -118,7 +177,7 @@
   <div class="wrap">
     <span class="tb-left">บริษัท แอคทีฟ ดี คอนซัลท์ จำกัด | บริษัทบัญชีและภาษี</span>
     <span class="tb-right">
-      <a href="tel:0642420000">โทร. 093-694-1794</a>
+      <a href="tel:0936941794">โทร. 093-694-1794</a>
       <a href="mailto:admin@activedeeconsult.com">admin@activedeeconsult.com</a>
     </span>
   </div>
@@ -133,21 +192,21 @@
         <span>รับทำบัญชี · ภาษี · จดทะเบียนบริษัท</span>
       </span>
     </a>
-<nav class="links" id="navLinks">
-  <a href="index.html">หน้าแรก</a>
-  <a href="aboutus.html">เกี่ยวกับเรา</a>
-  <a href="services.html">บริการ</a>
-  <a href="packages.html">แพ็กเกจราคา</a>
-  <a href="blog.html">บทความและข่าวสาร</a>
-  <span class="has-sub">
-    <a class="current" href="tools.html">เครื่องมือ<span class="caret">&#9660;</span></a>
-    <span class="sub">
-      <a href="receipt-substitute-generator.html">สร้างใบรับรองแทนใบเสร็จรับเงิน</a>
-      <a href="receipt-generator.html">สร้างใบสำคัญรับเงิน</a>
-    </span>
-  </span>
-  <a href="contactus.html">ติดต่อเรา</a>
-</nav>
+    <nav class="links" id="navLinks">
+      <a href="index.html">หน้าแรก</a>
+      <a href="aboutus.html">เกี่ยวกับเรา</a>
+      <a href="services.html">บริการ</a>
+      <a href="packages.html">แพ็กเกจราคา</a>
+      <span class="has-sub">
+        <a href="#">เครื่องมือ<span class="caret">&#9660;</span></a>
+        <span class="sub">
+          <a href="receipt-substitute-generator.html">สร้างใบรับรองแทนใบเสร็จรับเงิน</a>
+          <a href="receipt-generator.html">สร้างใบสำคัญรับเงิน</a>
+        </span>
+      </span>
+      <a href="blog.html">บทความและข่าวสาร</a>
+      <a href="contactus.html">ติดต่อเรา</a>
+    </nav>
     <a class="nav-cta" href="contactus.html">ปรึกษาฟรี</a>
     <button class="nav-toggle" id="navToggle" aria-label="เปิดเมนู" aria-expanded="false">&#9776;</button>
   </div>
@@ -157,7 +216,7 @@
   <div class="wrap">
     <div class="crumb"><a href="index.html">หน้าแรก</a><i>/</i>เครื่องมือ</div>
     <h1>สร้างใบสำคัญรับเงิน</h1>
-    <p>กรอกข้อมูลด้านซ้าย ระบบจะขึ้นตัวอย่างเอกสารให้ทันที เสร็จแล้วกดปุ่มพิมพ์เพื่อบันทึกเป็น PDF
+    <p>กรอกข้อมูลด้านซ้าย ระบบจะขึ้นตัวอย่างเอกสารให้ทันที เสร็จแล้วพิมพ์หรือดาวน์โหลดเป็น Word/Excel/PDF ได้เลย
     ข้อมูลทั้งหมดประมวลผลในเบราว์เซอร์ของคุณเท่านั้น ไม่ถูกส่งหรือบันทึกไว้ที่ไหน</p>
   </div>
 </section>
@@ -169,71 +228,59 @@
     <h2>ข้อมูลเอกสาร</h2>
     <p class="hint">ทุกช่องอัปเดตตัวอย่างเอกสารแบบเรียลไทม์</p>
 
-    <div class="field">
-      <label for="buyerName">ชื่อนิติบุคคล / กิจการ (ผู้จ่ายเงิน)</label>
-      <input id="buyerName" placeholder="เช่น บริษัท ยกตัวอย่าง จำกัด">
+    <div class="notice-box">
+      <strong>ตรวจสอบก่อนใช้งาน:</strong> ใบสำคัญรับเงินต้องมีลายมือชื่อผู้รับเงินจริง
+      โปรดพิมพ์เอกสารนี้แล้วให้ผู้รับเงินลงลายมือชื่อด้วยตนเองก่อนเก็บเข้าแฟ้มเอกสาร
     </div>
 
     <div class="field-row">
       <div class="field">
-        <label for="docDate">วันที่</label>
+        <label for="docDate">วันที่รับเงิน</label>
         <input id="docDate" type="date">
       </div>
       <div class="field">
         <label for="docNo">เลขที่เอกสาร (ถ้ามี)</label>
-        <input id="docNo" placeholder="เช่น ADC-0001">
+        <input id="docNo" placeholder="เช่น RV-0001">
       </div>
     </div>
-    <div class="field-row">
-      <div class="field">
-        <label for="buyerType">ประเภท</label>
-        <select id="buyerType">
-          <option value="บริษัทจำกัด">บริษัทจำกัด</option>
-          <option value="ห้างหุ้นส่วนจำกัด">ห้างหุ้นส่วนจำกัด</option>
-          <option value="ห้างหุ้นส่วนสามัญนิติบุคคล">ห้างหุ้นส่วนสามัญนิติบุคคล</option>
-          <option value="ร้าน (บุคคลธรรมดา)">ร้าน (บุคคลธรรมดา)</option>
-          <option value="มูลนิธิ / สมาคม">มูลนิธิ / สมาคม</option>
-          <option value="กิจการ (อื่นๆ)">กิจการ (อื่นๆ)</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="taxId">เลขประจำตัวผู้เสียภาษี</label>
-        <input id="taxId" placeholder="0 1234 12345 67 8" maxlength="17">
-      </div>
+
+    <div class="group-title">ข้าพเจ้า (ผู้ขายสินค้า / ผู้ให้บริการ — ผู้รับเงิน)</div>
+
+    <div class="field">
+      <label for="payeeName">ชื่อ-นามสกุล / ชื่อกิจการ</label>
+      <input id="payeeName" placeholder="เช่น นายสมชาย ใจดี หรือ ร้านตัวอย่าง">
     </div>
     <div class="field">
-      <label for="addressName">ที่อยู่</label>
-      <input id="addressName" placeholder="(ไม่จำเป็นต้องกรอกก็ได้) เช่น 123/45 หมู่บ้านตัวอย่าง ถนนตัวอย่าง แขวงตัวอย่าง เขตตัวอย่าง กรุงเทพมหานคร 10110">
+      <label for="payeeTaxId">เลขประจำตัวผู้เสียภาษี หรือ เลขบัตรประจำตัวประชาชน</label>
+      <input id="payeeTaxId" placeholder="0 1055 12345 67 8" maxlength="17">
     </div>
     <div class="field">
-    <label for="logoFile">โลโก้</label>
-    <input type="file" id="logoFile" accept="image/*">
+      <label for="payeeAddress">อยู่บ้านเลขที่ / ที่อยู่</label>
+      <textarea id="payeeAddress" rows="2" placeholder="บ้านเลขที่ ถนน ตำบล/แขวง อำเภอ/เขต จังหวัด รหัสไปรษณีย์"></textarea>
+    </div>
+
+    <div class="group-title">ได้รับเงินจาก (ผู้ซื้อ / ผู้รับบริการ — ผู้จ่ายเงิน)</div>
+
+    <div class="field">
+      <label for="payerName">ชื่อนิติบุคคล / กิจการ / ชื่อผู้จ่ายเงิน</label>
+      <input id="payerName" placeholder="เช่น บริษัท ตัวอย่าง จำกัด">
     </div>
     <div class="field">
-      <label for="itemRows">รายละเอียดรายจ่าย</label>
+      <label for="payerAddress">ที่อยู่</label>
+      <textarea id="payerAddress" rows="2" placeholder="ที่อยู่กิจการผู้จ่ายเงิน"></textarea>
+    </div>
+    <div class="field">
+      <label for="payerTaxId">เลขประจำตัวผู้เสียภาษี</label>
+      <input id="payerTaxId" placeholder="0 1055 12345 67 8" maxlength="17">
+    </div>
+
+    <div class="group-title">ดังรายการต่อไปนี้</div>
+
+    <div class="field">
       <div id="itemRows"></div>
       <button type="button" class="add-item-btn" id="addItemBtn">+ เพิ่มรายการ</button>
     </div>
 
-    <div class="field">
-      <label for="payerName">ชื่อผู้เบิกจ่าย</label>
-      <input id="payerName" placeholder="ชื่อ-นามสกุล">
-    </div>
-
-    <div class="field">
-      <label for="payerPosition">ตำแหน่ง</label>
-      <input id="payerPosition" placeholder="เช่น เจ้าหน้าที่ธุรการ">
-    </div>
-    <div class="field">
-      <label for="approverName">ชื่อผู้อนุมัติ</label>
-      <input id="approverName" placeholder="ชื่อ-นามสกุล">
-    </div>
-    <div>
-      <label class="save-inline">
-      <input type="checkbox" id="saveLocalChk">
-      จำข้อมูลกิจการไว้ในเครื่องนี้
-      </label>
-    </div>
     <div class="action-row">
       <button type="button" class="btn btn-primary" id="printBtn">พิมพ์ / บันทึกเป็น PDF</button>
       <button type="button" class="btn btn-ghost" id="wordBtn">ดาวน์โหลด Word (.docx)</button>
@@ -246,183 +293,126 @@
   <div class="doc-wrap">
     <div class="doc-scale">
       <div id="docSheet">
-<div class="doc-header">
-  <div class="doc-header-left">
-    <img id="p_logo" class="doc-logo" src="" alt="">
+        <div class="doc-header">
+          <div class="doc-header-left">
+            <h1>ใบสำคัญรับเงิน</h1>
+            <div class="en-title">Receipt Voucher</div>
+          </div>
+          <div class="doc-header-right">
+            <div class="doc-meta"><span class="lbl">เลขที่</span> <span class="val-inline" id="p_docno">-</span></div>
+            <div class="doc-meta"><span class="lbl">วันที่</span> <span class="val-inline" id="p_date">-</span></div>
+          </div>
+        </div>
 
-    <div class="doc-title">
-      <h1>ใบรับรองแทนใบเสร็จรับเงิน</h1>
-      <div class="en-title">Certificate in Lieu of Receipt</div>
-    </div>
-  </div>
+        <div class="doc-party">
+          <div class="party-title">ข้าพเจ้า (ผู้ขายสินค้า / ให้บริการ)</div>
+          <div class="doc-row"><span class="lbl">ชื่อ:</span><span class="val" id="p_payeeName">-</span></div>
+          <div class="doc-row"><span class="lbl">เลขประจำตัวผู้เสียภาษี/เลขบัตรประชาชน:</span><span class="val" id="p_payeeTaxId">-</span></div>
+          <div class="doc-row"><span class="lbl">ที่อยู่:</span><span class="val" id="p_payeeAddress">-</span></div>
+        </div>
 
-  <div class="doc-header-right">
-    <div class="doc-meta"><span class="lbl">เลขที่</span> <span class="val-inline" id="p_docno">-</span></div>
-    <div class="doc-meta"><span class="lbl">วันที่ออก</span> <span class="val-inline" id="p_date">-</span></div>
-  </div>
-</div>
+        <div class="doc-party">
+          <div class="party-title">ได้รับเงินจาก (ผู้ซื้อ / ผู้รับบริการ)</div>
+          <div class="doc-row"><span class="lbl">ชื่อ:</span><span class="val" id="p_payerName">-</span></div>
+          <div class="doc-row"><span class="lbl">ที่อยู่:</span><span class="val" id="p_payerAddress">-</span></div>
+          <div class="doc-row"><span class="lbl">เลขประจำตัวผู้เสียภาษี:</span><span class="val" id="p_payerTaxId">-</span></div>
+        </div>
 
-
-<div class="doc-row"><span class="lbl">ชื่อกิจการ:</span><span class="val" id="p_buyer">-</span>(ผู้ซื้อ / ผู้รับบริการ)<span class="lbl" style="margin-left:8px;" id="p_buyerTypeWrap">(<span id="p_buyerType">-</span>)</span></div>
-<div class="doc-row"><span class="lbl">เลขประจำตัวผู้เสียภาษี:</span><span class="val" id="p_taxId">-</span></div>
-<div class="doc-row"><span class="lbl">ที่อยู่:</span><span class="val" id="p_address">-</span></div>
         <table class="doc-table">
           <thead>
-            <tr><th style="width:50px;">ลำดับ</th><th>วันที่</th><th>รายการ</th><th style="width:140px;">จำนวนเงิน (บาท)</th><th>หมายเหตุ</th></tr>
+            <tr><th style="width:50px;">ลำดับ</th><th>รายการ</th><th style="width:140px;">จำนวนเงิน (บาท)</th></tr>
           </thead>
           <tbody id="p_items"></tbody>
           <tfoot>
             <tr class="total-row">
-              <td colspan="3" style="text-align:right;">รวมทั้งสิ้น</td>
+              <td colspan="2" style="text-align:right;">รวมเป็นเงิน</td>
               <td class="amt" id="p_total">0.00</td>
-              <td> </td>
             </tr>
           </tfoot>
         </table>
         <div class="doc-row"><span class="lbl">ตัวอักษร:</span><span class="val" id="p_totalText">-</span></div>
 
-        <div class="doc-declare">
-          ข้าพเจ้า <span id="p_payer" style="border-bottom:1px dotted #999; padding:0 6px;">...................</span>
-          ตำแหน่ง <span id="p_position" style="border-bottom:1px dotted #999; padding:0 6px;">...................</span>
-          ขอรับรองว่า รายจ่ายข้างต้นนี้ไม่อาจเรียกเก็บใบเสร็จรับเงินจากผู้รับได้จริง
-          และข้าพเจ้าได้จ่ายไปในกิจการของบริษัทจริงทุกประการ
-        </div>
-
         <div class="sign-area">
           <div>
             <div class="sign-line"></div>
-            <div class="sign-cap">
-              <span class="sign-name" id="p_payerSign"></span>
-            </div>
-            <div class="sign-cap">ผู้เบิกจ่าย / วันที่</div>
+            <div class="sign-cap">ลงชื่อ...................................ผู้รับเงิน<b id="p_payeeNameSign">(-)</b></div>
           </div>
           <div>
             <div class="sign-line"></div>
-            <div class="sign-cap">
-              <span class="sign-name" id="p_approverSign"></span>
-            </div>
-            <div class="sign-cap">ผู้อนุมัติ / วันที่</div>
+            <div class="sign-cap">ลงชื่อ...................................ผู้จ่ายเงิน / ผู้อนุมัติ</div>
           </div>
         </div>
       </div>
     </div>
     <p class="doc-note" style="padding:0 26px 22px; font-size:.8rem; color:var(--muted);">
-      * เอกสารนี้เป็นแบบฟอร์มทั่วไปตามแนวทางกรมสรรพากร ใช้เพื่ออ้างอิงเบื้องต้นเท่านั้น
-      กรณีมีข้อสงสัยเรื่องการใช้เป็นรายจ่ายทางภาษี แนะนำให้ปรึกษาผู้ทำบัญชีของกิจการก่อนใช้จริง
+      * เอกสารนี้เป็นแบบฟอร์มทั่วไปเพื่ออ้างอิงเบื้องต้น ใบสำคัญรับเงินต้องมีลายมือชื่อผู้รับเงินจริงจึงจะใช้เป็นหลักฐานได้
+      กรณีมีข้อสงสัยเรื่องการใช้เป็นหลักฐานทางบัญชีหรือภาษี แนะนำให้ปรึกษาผู้ทำบัญชีของกิจการก่อนใช้จริง
     </p>
   </div>
 </div>
-<section class="faq-section">
-  <h2>ใบรับรองแทนใบเสร็จรับเงิน คืออะไร</h2>
 
+<section class="faq-section">
+  <h2>ใบสำคัญรับเงิน คืออะไร</h2>
   <div class="faq-answer-box">
     <div class="kicker-label">คำตอบ</div>
     <p>
-      <strong>ใบรับรองแทนใบเสร็จรับเงิน</strong> คือเอกสารที่พนักงานของกิจการเขียนขึ้นเอง
-      เพื่อรับรองว่าตนเองได้จ่ายเงินไปจริงในนามของกิจการ แต่ไม่สามารถขอใบเสร็จรับเงินจากผู้รับเงินได้
-      มักใช้กับรายจ่ายจิปาถะที่มีมูลค่าไม่มาก เช่น ค่าที่จอดรถ ค่าทางด่วน ค่าวินมอเตอร์ไซค์
-      กรมสรรพากรกำหนดรูปแบบเอกสารนี้ไว้ในคู่มือการจัดทำเอกสารประกอบการลงบัญชี หัวข้อ 2.1.3
+      <strong>ใบสำคัญรับเงิน</strong> คือเอกสารที่ผู้รับเงิน (ฝั่งผู้ขายสินค้าหรือผู้ให้บริการ) ลงลายมือชื่อรับรองเองว่า
+      ได้รับเงินจากผู้จ่ายเงินไปจริงตามรายการที่ระบุไว้ ใช้บ่อยเวลาจ่ายเงินให้บุคคลธรรมดาหรือฟรีแลนซ์ที่ไม่มีใบเสร็จของตัวเอง
+      เพื่อให้กิจการมีหลักฐานประกอบการลงบัญชีและนำรายจ่ายนั้นไปใช้ทางภาษีได้
     </p>
   </div>
-
   <p class="faq-lead">
-    หลายคนเข้าใจผิดว่าเอกสารนี้ใช้แทนใบเสร็จได้ในทุกกรณี แต่จริง ๆ แล้วกรมสรรพากรจัดลำดับเอกสารไว้
-    3 ขั้น และใบรับรองแทนใบเสร็จรับเงินคือ<strong>ขั้นสุดท้าย</strong> ที่ใช้เมื่อไม่มีทางเลือกอื่นแล้วเท่านั้น
-    หากผู้รับเงินยอมเซ็นชื่อให้ ก็ต้องใช้เอกสารขั้นก่อนหน้าเสมอ
-  </p>
-
-  <h3>ใช้ใบรับรองแทนใบเสร็จรับเงินเมื่อไหร่</h3>
-  <div class="step-grid">
-    <div class="step-card">
-      <span class="step-badge">ขั้นที่ 1</span>
-      <h4>ใบรับตามมาตรา 105 ทวิ</h4>
-      <p>ถ้าผู้รับเงินยินยอมออกใบรับให้ ควรใช้ขั้นนี้ก่อนเสมอ เพราะเป็นหลักฐานที่แข็งแรงที่สุด</p>
-    </div>
-    <div class="step-card">
-      <span class="step-badge">ขั้นที่ 2</span>
-      <h4>ใบสำคัญรับเงิน</h4>
-      <p>กรณีผู้รับเงินออกใบเสร็จให้ไม่ได้ แต่ยินยอมลงลายมือชื่อในช่องผู้รับเงิน พร้อมแนบสำเนาบัตรประชาชน</p>
-    </div>
-    <div class="step-card highlight">
-      <span class="step-badge">ขั้นที่ 3</span>
-      <h4>ใบรับรองแทนใบเสร็จรับเงิน</h4>
-      <p>ใช้เมื่อผู้รับเงินไม่ยอมเซ็นชื่อให้เลย พนักงานของกิจการจึงต้องรับรองการจ่ายเงินนั้นด้วยตนเอง
-      คือเอกสารที่หน้านี้สร้างให้</p>
-    </div>
-  </div>
-
-  <p class="faq-lead">
-    ถ้าไม่มีหลักฐานการรับเงินจากผู้รับเงินเลยสักอย่าง คู่มือของกรมสรรพากรให้จัดทำ
-    <strong>ใบสำคัญจ่าย</strong> ตามหัวข้อ 2.3 ซึ่งต้องระบุชื่อ ที่อยู่ และเลขประจำตัวผู้เสียภาษีของผู้รับเงิน
-    พร้อมลายมือชื่อผู้รับเงินและผู้มีอำนาจอนุมัติ
+    จุดต่างสำคัญจาก <a href="receipt-substitute-generator.html">ใบรับรองแทนใบเสร็จรับเงิน</a> คือทิศทางของผู้ลงนาม —
+    ใบรับรองแทนใบเสร็จเป็นเอกสารที่<strong>เรา (ฝั่งจ่ายเงิน) เขียนขึ้นเองฝ่ายเดียว</strong> เมื่อผู้รับเงินไม่ยอมเซ็นให้
+    ส่วนใบสำคัญรับเงินคือเอกสารที่<strong>ผู้รับเงินยินยอมลงลายมือชื่อเอง</strong> จึงเป็นหลักฐานที่น่าเชื่อถือกว่า
+    ควรเลือกใช้ใบสำคัญรับเงินก่อนเสมอถ้าผู้รับเงินยินยอมเซ็นให้
   </p>
 </section>
+
 <section class="faq-section">
-  <h2>ใบรับรองแทนใบเสร็จรับเงินต้องมีอะไรบ้าง</h2>
+  <h2>ใบสำคัญรับเงินต้องมีอะไรบ้าง</h2>
   <p class="faq-lead">
-    ตามคู่มือการจัดทำเอกสารประกอบการลงบัญชีของกรมสรรพากร หัวข้อ 2.1.3 เอกสารนี้ต้องมีข้อมูลครบทุกข้อ
-    ขาดข้อใดข้อหนึ่งไป อาจกลายเป็นเอกสารที่พิสูจน์ตัวผู้รับเงินไม่ได้
+    เอกสารนี้ต้องมีข้อมูลครบเพียงพอที่จะตรวจสอบได้ว่าใครเป็นผู้รับเงิน รับเงินจากใคร และรับเงินจากรายการใด
   </p>
   <ul class="req-list">
-    <li><strong>ชื่อกิจการที่จ่ายเงิน</strong> — ระบุให้ชัดว่าเป็นบริษัทจำกัดหรือห้างหุ้นส่วนจำกัด ในฐานะผู้ซื้อหรือผู้รับบริการ</li>
-    <li><strong>วัน เดือน ปี ของรายจ่ายแต่ละรายการ</strong> — ต้องเป็นวันที่จ่ายเงินจริง ไม่ใช่วันที่พิมพ์เอกสาร</li>
-    <li><strong>รายละเอียดรายจ่าย</strong> — บอกให้ชัดว่าจ่ายค่าอะไร ไปทำอะไร ไม่ใช่เขียนกว้าง ๆ แค่ "ค่าใช้จ่ายเบ็ดเตล็ด"</li>
-    <li><strong>จำนวนเงินของแต่ละรายการ</strong> และยอดรวมทั้งสิ้น</li>
-    <li><strong>ยอดรวมเป็นตัวอักษร</strong> — ต้องตรงกับตัวเลข เป็นจุดที่ผู้สอบบัญชีดูเสมอ</li>
-    <li><strong>ชื่อและตำแหน่งของผู้เบิกจ่าย</strong> — คือพนักงานที่ควักเงินจ่ายไปจริง</li>
-    <li><strong>ข้อความรับรอง</strong> ว่ารายจ่ายข้างต้นเรียกใบเสร็จรับเงินจากผู้รับไม่ได้ และจ่ายไปในงานของกิจการโดยแท้</li>
-    <li><strong>ช่วงวันที่</strong> ตั้งแต่วันที่ถึงวันที่ ที่รายจ่ายในใบนี้เกิดขึ้น</li>
-    <li><strong>ลายมือชื่อ 2 คน</strong> — ผู้เบิกจ่ายและผู้อนุมัติ ต้องเป็นคนละคนกัน เพราะถ้าคนจ่ายเงินอนุมัติให้ตัวเองได้ ก็ไม่มีใครตรวจทานกันเลย</li>
+    <li><strong>ชื่อเอกสาร "ใบสำคัญรับเงิน"</strong> — ระบุชื่อเอกสารให้ชัดเจนทั้งภาษาไทยและอังกฤษ</li>
+    <li><strong>เลขที่เอกสารและวันที่รับเงิน</strong> — ควรเรียงเลขต่อเนื่องเพื่อให้ตรวจสอบย้อนหลังได้ง่าย</li>
+    <li><strong>ชื่อและที่อยู่ผู้รับเงิน</strong> — ระบุให้ตรงกับบัตรประชาชนหรือเอกสารจดทะเบียนกิจการ</li>
+    <li><strong>เลขประจำตัวผู้เสียภาษีหรือเลขบัตรประชาชนของผู้รับเงิน</strong> — ถ้าผู้รับเงินไม่มีเลขผู้เสียภาษี ให้ใช้เลขบัตรประชาชนแทนได้</li>
+    <li><strong>ชื่อและที่อยู่ผู้จ่ายเงิน</strong> — ฝั่งกิจการที่จ่ายเงินออกไป</li>
+    <li><strong>รายละเอียดสินค้าหรือบริการ</strong> — บอกให้ชัดว่าจ่ายค่าอะไร ไม่ใช่เขียนกว้าง ๆ</li>
+    <li><strong>จำนวนเงินเป็นตัวเลขและตัวอักษร</strong> — ต้องตรงกัน เป็นจุดที่ผู้สอบบัญชีตรวจเสมอ</li>
+    <li><strong>ลายมือชื่อผู้รับเงินจริง</strong> — คือหัวใจของเอกสารนี้ ถ้าไม่มีลายเซ็นจริง เอกสารจะมีน้ำหนักเท่าใบรับรองแทนใบเสร็จที่เราเขียนเองเท่านั้น</li>
   </ul>
-  <p class="faq-lead">
-    สังเกตว่าแบบของกรมสรรพากรเป็น<strong>ใบเดียวที่รวมรายจ่ายย่อยหลายรายการในช่วงเวลาหนึ่ง</strong>
-    ไม่ใช่ใบละหนึ่งรายการ จึงออกแบบมาให้เคลียร์เงินสดย่อยทีเดียวตอนสิ้นเดือน เครื่องมือด้านบนจึงทำเป็นตารางหลายบรรทัดตามต้นฉบับ
-  </p>
 </section>
 
 <section class="faq-section">
-  <h2>เอกสารที่ต้องแนบ</h2>
+  <h2>วิธีรับเงินและภาษีที่เกี่ยวข้อง</h2>
   <div class="doc-cards">
     <div class="doc-card">
-      <h4>หลักฐานการจ่ายเงิน คือสิ่งที่ช่วยให้รายจ่ายผ่าน</h4>
+      <h4>ฝั่งผู้จ่ายเงิน อาจต้องหักภาษี ณ ที่จ่าย</h4>
       <p>
-        คู่มือของกรมสรรพากรแนะนำหลักฐานการจ่ายเงิน 2 แบบ คือ สำเนาเช็คที่ขีดคร่อม
-        <strong>A/C Payee only</strong> ซึ่งมีหลักฐานตัดบัญชีแล้ว หรือสำเนาใบโอนเงินผ่านธนาคาร/ช่องทางอิเล็กทรอนิกส์
-        เพราะเอกสารพวกนี้คือสิ่งเดียวที่พิสูจน์ได้ว่าเงินไปถึงใครจริง จึงควรแนบไว้ทุกครั้งที่ทำได้
+        ถ้าจ่ายค่าบริการให้บุคคลธรรมดาหรือนิติบุคคลตามประเภทเงินได้ที่กฎหมายกำหนด ผู้จ่ายเงินมีหน้าที่หักภาษี ณ ที่จ่าย
+        และออกหนังสือรับรองการหักภาษี ณ ที่จ่ายให้ผู้รับเงินไว้เป็นหลักฐานคู่กับใบสำคัญรับเงินฉบับนี้
       </p>
     </div>
     <div class="doc-card">
-      <h4>จ่ายเงินสดยิ่งต้องระวัง</h4>
+      <h4>ไม่มีเลขผู้เสียภาษี ใช้เลขบัตรประชาชนแทนได้</h4>
       <p>
-        รายจ่ายที่ต้องใช้ใบรับรองแทนใบเสร็จมักเป็นเงินสด ซึ่งไม่มีร่องรอยไปถึงตัวผู้รับเงิน
-        ทางที่ปลอดภัยกว่าคือโอนเงินให้มากที่สุดเท่าที่ทำได้ แล้วเขียนเลขอ้างอิงการโอนไว้ในช่องหมายเหตุ
-        ถ้าจำเป็นต้องจ่ายสดจริง ๆ ให้เก็บหลักฐานอื่นประกอบไว้ด้วย เช่น ภาพถ่ายสินค้า ใบส่งของ หรือสัญญา
+        กรณีผู้รับเงินเป็นบุคคลธรรมดาทั่วไปที่ไม่ได้จดทะเบียนภาษี สามารถใช้เลขประจำตัวประชาชน 13 หลักแทนเลขผู้เสียภาษีในเอกสารนี้ได้
+        ขอแค่ระบุให้ตรงกับบัตรประชาชนจริงของผู้รับเงิน
       </p>
     </div>
     <div class="doc-card">
-      <h4>เก็บไว้อย่างน้อย 5 ปี นับแต่วันปิดบัญชี</h4>
+      <h4>เก็บเอกสารไว้อย่างน้อย 5 ปี</h4>
       <p>
-        พระราชบัญญัติการบัญชี พ.ศ. 2543 มาตรา 14 กำหนดให้ผู้มีหน้าที่จัดทำบัญชีเก็บรักษาบัญชีและเอกสารประกอบการลงบัญชีไว้ไม่น้อยกว่า 5 ปี
-        <strong>นับแต่วันปิดบัญชี</strong> ไม่ใช่นับจากวันที่ในเอกสาร และอธิบดีมีอำนาจกำหนดให้เก็บเกิน 5 ปีได้ แต่ไม่เกิน 7 ปี
-        ฝ่าฝืนมีโทษปรับตามมาตรา 31 — ควรเก็บใบรับรองแทนใบเสร็จไว้คู่กับหลักฐานการจ่ายเงินในชุดเดียวกัน
-        แยกเก็บคนละที่แล้วหาไม่เจอตอนถูกตรวจ ก็มีค่าเท่ากับไม่มีเอกสาร
+        ใบสำคัญรับเงินถือเป็นเอกสารประกอบการลงบัญชี ต้องเก็บรักษาไว้ไม่น้อยกว่า 5 ปีนับแต่วันปิดบัญชีตามพระราชบัญญัติการบัญชี พ.ศ. 2543
+        ควรเก็บคู่กับหลักฐานการโอนเงินหรือหลักฐานจ่ายเงินสดในชุดเดียวกัน
       </p>
     </div>
   </div>
 </section>
 
-<section class="faq-section">
-  <h2>วิธีเขียนใบรับรองแทนใบเสร็จรับเงิน</h2>
-  <ol class="step-list">
-    <li>ใส่ชื่อกิจการ เลขประจำตัวผู้เสียภาษี และเลือกว่าเป็นบริษัทจำกัดหรือห้างหุ้นส่วนจำกัด</li>
-    <li>ใส่รายจ่ายทีละบรรทัด ระบุวันที่จ่ายจริงของแต่ละรายการ</li>
-    <li>เขียนรายละเอียดให้คนนอกอ่านแล้วเข้าใจ เช่น "ค่าแท็กซี่ไปยื่นเอกสารที่สรรพากรพื้นที่" ดีกว่าเขียนว่า "ค่าเดินทาง"</li>
-    <li>ใส่จำนวนเงินของแต่ละรายการ แล้วตรวจยอดรวมให้ตรงกับยอดตัวอักษร</li>
-    <li>ในช่องหมายเหตุ ระบุว่าจ่ายเงินสดหรือโอน ถ้าโอนให้ใส่เลขอ้างอิงด้วย</li>
-    <li>ใส่ชื่อและตำแหน่งของพนักงานผู้เบิกจ่าย พร้อมช่วงวันที่ตั้งแต่วันแรกถึงวันสุดท้ายในตาราง</li>
-    <li>พิมพ์ออกมาให้ผู้เบิกจ่ายและผู้อนุมัติลงลายมือชื่อจริง แล้วแนบหลักฐานการจ่ายเงินเก็บเข้าแฟ้ม</li>
-  </ol>
-</section>
 <footer class="site">
   <div class="wrap">
     <div class="f-grid">
@@ -444,7 +434,7 @@
       <div>
         <h5>ติดต่อเรา</h5>
         <ul>
-          <li>โทร. <a href="tel:0642420000">093-694-1794</a></li>
+          <li>โทร. <a href="tel:0936941794">093-694-1794</a></li>
           <li><a href="mailto:admin@activedeeconsult.com">admin@activedeeconsult.com</a></li>
           <li>จันทร์ – ศุกร์ 08.30 – 18.00 น.</li>
         </ul>
@@ -458,37 +448,13 @@
 </footer>
 
 <div class="floats">
-  <a class="float-btn call" href="tel:0642420000" aria-label="โทรหาเรา">&#9742;</a>
+  <a class="float-btn call" href="tel:0936941794" aria-label="โทรหาเรา">&#9742;</a>
   <a class="float-btn line" href="https://line.me/R/ti/p/@yoyo-darin" target="_blank" rel="noopener" aria-label="แชทผ่าน LINE">&#128172;</a>
   <a class="float-btn fb" href="https://www.facebook.com/profile.php?id=61593271767709" target="_blank" rel="noopener" aria-label="ไปที่ Facebook">&#128241;</a>
   <a class="float-btn top" href="#" id="toTop" aria-label="กลับขึ้นบน">&#8593;</a>
 </div>
+
 <script>
-// =========================
-// ตัวแปรหลักของระบบ
-// =========================
-let logoBase64 = "";let 
-logoArrayBuffer = null;   // ⭐ เพิ่มบรรทัดนี้
-const logoFile = document.getElementById('logoFile');
-const pLogo = document.getElementById('p_logo');
-
-// =========================
-// อ่านไฟล์โลโก้ → แปลง Base64 → ใส่ใน preview
-// =========================
-logoFile.addEventListener('change', () => {
-  const file = logoFile.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    logoBase64 = reader.result;   // เก็บ Base64 ไว้ใช้ตอน Export
-    logoArrayBuffer = base64ToArrayBuffer(logoBase64);   // ⭐ เพิ่มบรรทัดนี้ Base64 → ArrayBuffer
-    pLogo.src = logoBase64;       // แสดงใน preview
-    renderDoc();                  // อัปเดตเอกสาร
-  };
-  reader.readAsDataURL(file);
-});
-
   const navToggle = document.getElementById('navToggle');
   const navLinks = document.getElementById('navLinks');
   navToggle.addEventListener('click', () => {
@@ -499,56 +465,29 @@ logoFile.addEventListener('change', () => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
+</script>
 
-// =========================
-// ฟังก์ชันแปลง Base64 → ArrayBuffer
-// =========================
-function base64ToArrayBuffer(base64) {
-  const binary = atob(base64.split(',')[1]);
-  const len = binary.length;
-  const buffer = new Uint8Array(len);
-  for (let i = 0; i < len; i++) {
-    buffer[i] = binary.charCodeAt(i);
-  }
-  return buffer;
-}
+<script>
+  // ===================== เครื่องมือสร้างใบสำคัญรับเงิน =====================
 
-  // ===================== เครื่องมือสร้างใบรับรองแทนใบเสร็จรับเงิน =====================
   const itemRowsEl = document.getElementById('itemRows');
-  let itemCount = 0;
-function addItemRow(desc = '', tdate = '', amount = '', notes = '') {
-  itemCount++;
 
-  // 🔥 ตั้งค่า default เป็นวันที่วันนี้
-  if (!tdate) {
-    tdate = new Date().toISOString().split('T')[0];
+  function addItemRow(desc = '', amount = '') {
+    const row = document.createElement('div');
+    row.className = 'item-row';
+    row.innerHTML = `
+      <input type="text" placeholder="รายการ เช่น ค่าออกแบบโลโก้" class="item-desc" value="${desc}">
+      <input type="number" placeholder="จำนวนเงิน" class="item-amt" step="0.01" min="0" value="${amount}">
+      <button type="button" class="item-remove" title="ลบรายการนี้">&times;</button>
+    `;
+    row.querySelector('.item-desc').addEventListener('input', renderDoc);
+    row.querySelector('.item-amt').addEventListener('input', renderDoc);
+    row.querySelector('.item-remove').addEventListener('click', () => {
+      row.remove();
+      renderDoc();
+    });
+    itemRowsEl.appendChild(row);
   }
-
-  const row = document.createElement('div');
-  row.className = 'item-row';
-  row.innerHTML = `
-    <strong>รายการที่ ${itemCount}</strong>
-    <input type="text" placeholder="เช่น ค่าขนส่ง" class="item-desc" value="${desc}">
-    วันที่<input type="date" class="item-date" value="${tdate}">
-    จำนวนเงิน<input type="number" class="item-amt" step="0.01" min="0" value="${amount}">
-    หมายเหตุ<input type="text" class="item-notes" value="${notes}">
-    <button type="button" class="item-remove" title="ลบรายการนี้">&times;</button>
-  `;
-  
-  row.querySelectorAll('input').forEach(input => {
-    input.addEventListener('input', renderDoc);
-  });
-
-  row.querySelector('.item-remove').addEventListener('click', () => {
-    row.remove();
-    renderDoc();
-  });
-
-  itemRowsEl.appendChild(row);
-  renderDoc();
-}
-
-
 
   document.getElementById('addItemBtn').addEventListener('click', () => addItemRow());
 
@@ -566,7 +505,7 @@ function addItemRow(desc = '', tdate = '', amount = '', notes = '') {
       const len = str.length;
       for (let i = 0; i < len; i++) {
         const digit = parseInt(str[i], 10);
-        const pos = len - i - 1; // ตำแหน่งหลัก นับจากขวา (0 = หลักหน่วย)
+        const pos = len - i - 1;
         if (digit === 0) continue;
         if (pos === 0 && digit === 1 && len > 1) {
           result += 'เอ็ด';
@@ -594,124 +533,11 @@ function addItemRow(desc = '', tdate = '', amount = '', notes = '') {
   function formatDateThai(dateStr) {
     if (!dateStr) return '-';
     const d = new Date(dateStr + 'T00:00:00');
-    const months = [
-  'มกราคม',
-  'กุมภาพันธ์',
-  'มีนาคม',
-  'เมษายน',
-  'พฤษภาคม',
-  'มิถุนายน',
-  'กรกฎาคม',
-  'สิงหาคม',
-  'กันยายน',
-  'ตุลาคม',
-  'พฤศจิกายน',
-  'ธันวาคม'
-];
-const shot_months = [
-  'ม.ค.',
-  'ก.พ.',
-  'มี.ค.',
-  'เม.ย.',
-  'พ.ค.',
-  'มิ.ย.',
-  'ก.ค.',
-  'ส.ค.',
-  'ก.ย.',
-  'ต.ค.',
-  'พ.ย.',
-  'ธ.ค.'
-];
-    return `${d.getDate()} ${shot_months[d.getMonth()]} ${d.getFullYear() + 543}`;
+    const months = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+    return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear() + 543}`;
   }
 
-  function renderDoc() {
-    document.getElementById('p_buyer').textContent = document.getElementById('buyerName').value || '-';
-    document.getElementById('p_buyerType').textContent = document.getElementById('buyerType').value || '-';
-    document.getElementById('p_taxId').textContent = document.getElementById('taxId').value || '-';
-    document.getElementById('p_address').textContent = document.getElementById('addressName').value || '-';
-    document.getElementById('p_date').textContent = formatDateThai(document.getElementById('docDate').value);
-    document.getElementById('p_docno').textContent = document.getElementById('docNo').value || '-';
-    document.getElementById('p_payer').textContent = document.getElementById('payerName').value || '...................';
-    document.getElementById('p_position').textContent = document.getElementById('payerPosition').value || '...................';
-    //document.getElementById('p_approver').textContent = document.getElementById('approverName').value || '...................';
-    document.getElementById('p_payerSign').textContent = document.getElementById('payerName').value || '';
-    document.getElementById('p_approverSign').textContent = document.getElementById('approverName').value || '';
-    const today = new Date().toISOString().split('T')[0];
-    const rows = [...itemRowsEl.querySelectorAll('.item-row')];
-    let total = 0;
-    const tbody = document.getElementById('p_items');
-    tbody.innerHTML = rows.map((row, i) => {
-      const desc = row.querySelector('.item-desc').value || '-';
-      const amt = parseFloat(row.querySelector('.item-amt').value) || 0;
-      const notes = row.querySelector('.item-notes').value || '-';
-      const tdate = row.querySelector('.item-date').value ? row.querySelector('.item-date').value : today;
-      total += amt;
-      return `<tr><td>${i + 1}</td><td>${tdate}</td><td>${desc}</td><td class="amt">${amt.toLocaleString('th-TH', {minimumFractionDigits:2})}</td><td>${notes}</td></tr>`;
-    }).join('') || '<tr><td colspan="3" style="text-align:center;color:#999;">ยังไม่มีรายการ</td></tr>';
-
-    document.getElementById('p_total').textContent = total.toLocaleString('th-TH', {minimumFractionDigits:2});
-    document.getElementById('p_totalText').textContent = bahtText(total);
-    saveLocal();
-  }
-function saveLocal() {
-  if (!document.getElementById('saveLocalChk').checked) return;
-
-  const data = {
-    buyerName: document.getElementById('buyerName').value,
-    buyerType: document.getElementById('buyerType').value,
-    taxId: document.getElementById('taxId').value,
-    addressName: document.getElementById('addressName').value,
-    payerName: document.getElementById('payerName').value,
-    payerPosition: document.getElementById('payerPosition').value,
-    approverName: document.getElementById('approverName').value,
-    logo: document.getElementById('p_logo').src || '',
-    items: [...itemRowsEl.querySelectorAll('.item-row')].map(row => ({
-      desc: row.querySelector('.item-desc').value,
-      date: row.querySelector('.item-date').value,
-      amt: row.querySelector('.item-amt').value,
-      notes: row.querySelector('.item-notes').value,
-    }))
-  };
-
-  localStorage.setItem('receiptForm', JSON.stringify(data));
-}
-
-
-
-
- [...document.querySelectorAll('.tool-form input, .tool-form select, .tool-form textarea')].forEach(el => {
-  el.addEventListener('input', renderDoc);
-  el.addEventListener('change', renderDoc);
-});
-
-document.getElementById('printBtn').addEventListener('click', printInNewTab);
-
-document.getElementById('resetBtn').addEventListener('click', () => {
-  // ล้างทุกช่อง
-  document.querySelectorAll('.tool-form input').forEach(el => el.value = '');
-
-  // ล้างรายการ
-  itemRowsEl.innerHTML = '';
-  addItemRow();
-
-  // 🔥 ตั้งวันที่วันนี้กลับมาใหม่
-  document.getElementById('docDate').valueAsDate = new Date();
-
-  renderDoc();
-});
-
-
-function printInNewTab() {
-  const styleTag = document.querySelector('style').outerHTML;
-  const docHtml = document.getElementById('docSheet').outerHTML;
-  const logoHtml = pLogo.src ? `<img src="${pLogo.src}" style="max-width:120px; max-height:120px;">` : '';
-  const printWindow = window.open('', '_blank');
-  if (!printWindow) {
-    alert('เบราว์เซอร์บล็อกการเปิดแท็บใหม่ กรุณาอนุญาต pop-up สำหรับเว็บนี้แล้วลองใหม่');
-    return;
-  }
-
+  // ----- ตัวจัดกลุ่มเลขผู้เสียภาษี/บัตรประชาชนอัตโนมัติ (1-4-5-2-1 หลัก) -----
   function formatTaxId(value) {
     const digits = value.replace(/\D/g, '').slice(0, 13);
     const groups = [1, 4, 5, 2, 1];
@@ -725,285 +551,256 @@ function printInNewTab() {
     return result;
   }
 
-
-  document.getElementById('taxId').addEventListener('input', (e) => {
-    const cursorWasAtEnd = e.target.selectionStart === e.target.value.length;
-    e.target.value = formatTaxId(e.target.value);
-    if (cursorWasAtEnd) e.target.setSelectionRange(e.target.value.length, e.target.value.length);
+  [document.getElementById('payeeTaxId'), document.getElementById('payerTaxId')].forEach(el => {
+    el.addEventListener('input', (e) => {
+      const cursorWasAtEnd = e.target.selectionStart === e.target.value.length;
+      e.target.value = formatTaxId(e.target.value);
+      if (cursorWasAtEnd) e.target.setSelectionRange(e.target.value.length, e.target.value.length);
+    });
   });
+
+  function renderDoc() {
+    document.getElementById('p_date').textContent = formatDateThai(document.getElementById('docDate').value);
+    document.getElementById('p_docno').textContent = document.getElementById('docNo').value || '-';
+
+    document.getElementById('p_payeeName').textContent = document.getElementById('payeeName').value || '-';
+    document.getElementById('p_payeeTaxId').textContent = document.getElementById('payeeTaxId').value || '-';
+    document.getElementById('p_payeeAddress').textContent = document.getElementById('payeeAddress').value || '-';
+    document.getElementById('p_payeeNameSign').textContent = `(${document.getElementById('payeeName').value || '...................'})`;
+
+    document.getElementById('p_payerName').textContent = document.getElementById('payerName').value || '-';
+    document.getElementById('p_payerAddress').textContent = document.getElementById('payerAddress').value || '-';
+    document.getElementById('p_payerTaxId').textContent = document.getElementById('payerTaxId').value || '-';
+
+    const rows = [...itemRowsEl.querySelectorAll('.item-row')];
+    let total = 0;
+    const tbody = document.getElementById('p_items');
+    tbody.innerHTML = rows.map((row, i) => {
+      const desc = row.querySelector('.item-desc').value || '-';
+      const amt = parseFloat(row.querySelector('.item-amt').value) || 0;
+      total += amt;
+      return `<tr><td>${i + 1}</td><td>${desc}</td><td class="amt">${amt.toLocaleString('th-TH', {minimumFractionDigits:2})}</td></tr>`;
+    }).join('') || '<tr><td colspan="3" style="text-align:center;color:#999;">ยังไม่มีรายการ</td></tr>';
+
+    document.getElementById('p_total').textContent = total.toLocaleString('th-TH', {minimumFractionDigits:2});
+    document.getElementById('p_totalText').textContent = bahtText(total);
+  }
+
+  [...document.querySelectorAll('.tool-form input, .tool-form select, .tool-form textarea')].forEach(el => {
+    el.addEventListener('input', renderDoc);
+    el.addEventListener('change', renderDoc);
+  });
+
+  // ----- พิมพ์ในแท็บใหม่ -----
+  function printInNewTab() {
+    const styleTag = document.querySelector('style').outerHTML;
+    const docHtml = document.getElementById('docSheet').outerHTML;
+
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      alert('เบราว์เซอร์บล็อกการเปิดแท็บใหม่ กรุณาอนุญาต pop-up สำหรับเว็บนี้แล้วลองใหม่');
+      return;
+    }
+
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html lang="th">
+      <head>
+        <meta charset="UTF-8">
+        <title>ใบสำคัญรับเงิน</title>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+        ${styleTag}
+        <style>body{ margin:0; padding:24px; background:#fff; }</style>
+      </head>
+      <body>${docHtml}</body>
+      </html>
+    `);
+    printWindow.document.close();
+
+    printWindow.onload = () => {
+      printWindow.focus();
+      printWindow.print();
+    };
+  }
+
+  document.getElementById('printBtn').addEventListener('click', printInNewTab);
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    document.querySelectorAll('.tool-form input, .tool-form textarea').forEach(el => el.value = '');
+    itemRowsEl.innerHTML = '';
+    addItemRow();
+    renderDoc();
+  });
+
   // เริ่มต้นด้วย 1 แถวรายการ และวันที่วันนี้
   addItemRow();
   document.getElementById('docDate').valueAsDate = new Date();
   renderDoc();
-  
-printWindow.document.write(`
-<!DOCTYPE html>
-<html lang="th">
-<head>
-  <meta charset="UTF-8">
-  <title>ใบรับรองแทนใบเสร็จรับเงิน</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
-  ${styleTag}
-
-  <style>
-    body {
-      margin: 0;
-      padding: 24px;
-      background: #fff;
-      font-family: 'Noto Sans Thai', sans-serif;
-    }
-
-    /* ให้ footer ติดทุกหน้า */
-    @page {
-      margin: 24mm;
-    }
-
-    footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      text-align: center;
-      font-size: 10px;
-      color: #555;
-    }
-  </style>
-</head>
-
-<body>
-  ${logoHtml}
-  ${docHtml}
-  <footer>
-    ใช้กับรายจ่ายเบ็ดเตล็ดที่เรียกใบเสร็จจากผู้รับเงินไม่ได้เท่านั้น ควรแนบหลักฐานการจ่ายเงิน เช่น สลิปโอนเงิน ไว้กับเอกสารฉบับนี้ ถ้าผู้รับเงินยอมลงลายมือชื่อ ให้ใช้ใบสำคัญรับเงินแทน   
-แบบฟอร์มตามคู่มือกรมสรรพากร หัวข้อ 2.1.3   จัดทำโดย activedeeconsult.com
-  </footer>
-</body>
-</html>
-`);
-  printWindow.document.close();
-  printWindow.onload = () => {
-    printWindow.focus();
-    printWindow.print();
-  };
-}
-
-
-  // ----- รวมข้อมูลจากฟอร์ม (ใช้ร่วมกันทั้ง preview / Word / Excel) -----
-function collectData() {
-  const today = new Date().toISOString().split('T')[0];
-  const rows = [...itemRowsEl.querySelectorAll('.item-row')];
-  const items = rows.map(row => ({
-    desc: row.querySelector('.item-desc').value || '-',
-    amt: parseFloat(row.querySelector('.item-amt').value) || 0,
-    notes: row.querySelector('.item-notes').value || '-',
-    tdate: row.querySelector('.item-date').value ? row.querySelector('.item-date').value : today,
-  }));
-  const total = items.reduce((sum, it) => sum + it.amt, 0);
-  return {
-    buyer: document.getElementById('buyerName').value || '-',
-    buyerType: document.getElementById('buyerType').value,
-    taxId: document.getElementById('taxId').value,
-    address: document.getElementById('addressName').value,
-    dateText: formatDateThai(document.getElementById('docDate').value),
-    docNo: document.getElementById('docNo').value,
-    payerName: document.getElementById('payerName').value,
-    payerPosition: document.getElementById('payerPosition').value,
-    approver: document.getElementById('approverName').value,
-    items, total, totalText: bahtText(total),
-  };
-}
-
-function downloadBlob(blob, filename) {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = filename;
-  document.body.appendChild(a); a.click(); a.remove();
-  URL.revokeObjectURL(url);
-}
-
-// ----- ดาวน์โหลดเป็น Word (.docx) -----
-async function generateWordDoc() {
-let logoImage = null;
-
-if (logoArrayBuffer) {
-  logoImage = new docx.ImageRun({
-    data: logoArrayBuffer,
-    transformation: { width: 180, height: 60 },
-  });
-}
-
-  const { Document, Packer, Paragraph, TextRun, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle } = docx;
-  const d = collectData();
-
-  const cellBorder = { top:{style:BorderStyle.SINGLE,size:2,color:"999999"}, bottom:{style:BorderStyle.SINGLE,size:2,color:"999999"}, left:{style:BorderStyle.SINGLE,size:2,color:"999999"}, right:{style:BorderStyle.SINGLE,size:2,color:"999999"} };
-  function cell(text, opts = {}) {
-    return new TableCell({
-      borders: cellBorder,
-      width: opts.width ? { size: opts.width, type: WidthType.PERCENTAGE } : undefined,
-      children: [new Paragraph({ alignment: opts.align || AlignmentType.LEFT, children: [new TextRun({ text: String(text), bold: !!opts.bold })] })],
-    });
-  }
-
-  const itemRowsDocx = d.items.map((it, i) => new TableRow({
-    children: [
-      cell(i + 1, { width: 10, align: AlignmentType.CENTER }),
-      cell(it.tdate, { width: 10, bold:true }),
-      cell(it.desc, { width: 30 }),
-      cell(it.amt.toLocaleString('th-TH', {minimumFractionDigits:2}), { width: 30, align: AlignmentType.RIGHT }),
-      cell(it.notes, { width: 20 }),
-    ],
-  }));
-
-  const table = new Table({
-    width: { size: 100, type: WidthType.PERCENTAGE },
-    rows: [
-      new TableRow({ children: [
-        cell("ลำดับ", { width:10, bold:true, align:AlignmentType.CENTER }),
-        cell("วันที่", { width:10, bold:true }),
-        cell("รายการ", { width:30, bold:true }),
-        cell("จำนวนเงิน (บาท)", { width:30, bold:true, align:AlignmentType.RIGHT }),
-        cell("หมายเหตุ", { width:20, bold:true }),
-      ]}),
-      ...itemRowsDocx,
-      new TableRow({ children: [
-        cell("", { width:10 }),
-        cell("รวมทั้งสิ้น", { width:40, bold:true, align:AlignmentType.RIGHT }),
-        cell(d.total.toLocaleString('th-TH', {minimumFractionDigits:2}), { width:30, bold:true, align:AlignmentType.RIGHT }),
-      ]}),
-    ],
-  });
-
-  // หัวเอกสาร 2 คอลัมน์ (ซ้าย=ชื่อเรื่อง, ขวา=เลขที่/วันที่) — เลียนแบบเลย์เอาต์ตอนพิมพ์
-  const noBorder = { style: BorderStyle.NONE, size: 0, color: "FFFFFF" };
-  const headerTable = new Table({
-    width: { size: 100, type: WidthType.PERCENTAGE },
-    borders: { top:noBorder, bottom:noBorder, left:noBorder, right:noBorder, insideHorizontal:noBorder, insideVertical:noBorder },
-    rows: [ new TableRow({ children: [
-      new TableCell({
-        width: { size: 10, type: WidthType.PERCENTAGE },
-        borders: { top:noBorder, bottom:noBorder, left:noBorder, right:noBorder },
-        children: logoImage
-        ? [new Paragraph({ children: [logoImage],alignment: AlignmentType.LEFT, spacing:{after:120} })] 
-        : [],   // ⭐ ถ้าไม่มีรูป → ไม่แสดงอะไรเลย
-      }),
-      new TableCell({
-        width: { size: 50, type: WidthType.PERCENTAGE },
-        borders: { top:noBorder, bottom:noBorder, left:noBorder, right:noBorder },
-        children: [
-          new Paragraph({ children: [new TextRun({ text:"ใบรับรองแทนใบเสร็จรับเงิน", bold:true, size:32 })] }),
-          new Paragraph({ children: [new TextRun({ text:"Certificate in Lieu of Receipt", size:20, color:"555555" })] }),
-        ],
-      }),
-      new TableCell({
-        width: { size: 40, type: WidthType.PERCENTAGE },
-        borders: { top:noBorder, bottom:noBorder, left:noBorder, right:noBorder },
-        children: [
-          new Paragraph({ alignment: AlignmentType.RIGHT, children: [new TextRun({ text:`เลขที่ ${d.docNo || '-'}`, bold:true, size:22 })] }),
-          new Paragraph({ alignment: AlignmentType.RIGHT, children: [new TextRun({ text:`วันที่ออก ${d.dateText}`, size:22 })] }),
-        ],
-      }),
-    ]})],
-  });
-  const doc = new Document({
-    sections: [{
-      children: [
-        headerTable,
-        new Paragraph({ spacing:{before:120, after:260}, border:{ bottom:{ style:BorderStyle.SINGLE, size:12, color:"333333" } }, children:[new TextRun("")] }),
-
-        new Paragraph({ spacing:{after:80}, children: [new TextRun(`ชื่อกิจการ: ${d.buyer}  (${d.buyerType || '-'})`)] }),
-        new Paragraph({ spacing:{after:200}, children: [new TextRun(`เลขประจำตัวผู้เสียภาษี: ${d.taxId || '-'}`)] }),
-        new Paragraph({ spacing:{after:200}, children: [new TextRun(`ที่อยู่: ${d.address || '-'}`)] }),
-
-        table,
-
-        new Paragraph({ spacing:{before:200, after:100}, children: [new TextRun(`ตัวอักษร: ${d.totalText}`)] }),
-        new Paragraph({ spacing:{before:200, after:400}, children: [new TextRun(
-          `ข้าพเจ้า ${d.payerName || '...................'} ตำแหน่ง ${d.payerPosition || '...................'} ` +
-          `ขอรับรองว่า รายจ่ายข้างต้นนี้ไม่อาจเรียกเก็บใบเสร็จรับเงินจากผู้รับได้จริง และข้าพเจ้าได้จ่ายไปในกิจการของบริษัทจริงทุกประการ`
-        )] }),
-        new Paragraph({ spacing:{before:600}, children: [new TextRun("........................................          ผู้เบิกจ่าย / วันที่")] }),
-        new Paragraph({ spacing:{before:400}, children: [new TextRun("........................................          ผู้อนุมัติ / วันที่")] }),
-      ],
-    }],
-  });
-
-  const blob = await Packer.toBlob(doc);
-  downloadBlob(blob, `ใบรับรองแทนใบเสร็จรับเงิน-${d.docNo || 'form'}.docx`);
-}
-
-// ----- ดาวน์โหลดเป็น Excel (.xlsx) -----
-function generateExcelDoc() {
-  const logoHtml = logoBase64
-  ? `<img src="${logoBase64}" style="width:150px;">`
-  : "";
-  const d = collectData();
-const rows = [
-  [logoHtml, "", "", `เลขที่ ${d.docNo || '-'}`],
-  ["ใบรับรองแทนใบเสร็จรับเงิน", "", "", ""],
-  ["Certificate in Lieu of Receipt", "", "", `วันที่ออก ${d.dateText}`],
-  [],
-  ["ชื่อกิจการ", d.buyer, "ประเภท", d.buyerType || "-"],
-  ["เลขประจำตัวผู้เสียภาษี", d.taxId || "-"],
-  [],
-  ["ลำดับ", "วันที่", "รายการ", "จำนวนเงิน (บาท)", "หมายเหตุ"],
-  ...d.items.map((it, i) => [i + 1, it.tdate, it.desc, it.amt, it.notes]),
-  ["", "", "รวมทั้งสิ้น", d.total],
-  [],
-  ["ตัวอักษร", d.totalText],
-  [],
-  [`ข้าพเจ้า ${d.payerName || '...'} ตำแหน่ง ${d.payerPosition || '...'} ขอรับรองว่ารายจ่ายข้างต้นนี้ไม่อาจเรียกเก็บใบเสร็จรับเงินจากผู้รับได้จริง`],
-  [], [],
-  ["ผู้เบิกจ่าย / วันที่", "", "ผู้อนุมัติ / วันที่"],
-];
-
-  const ws = XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols'] = [{ wch:10 }, { wch:40 }, { wch:30 }, { wch:20 }, { wch:20 }];
-  ws["A1"].t = "s";     // string
-ws["A1"].h = logoHtml; // HTML content
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "ใบรับรองแทนใบเสร็จ");
-  XLSX.writeFile(wb, `ใบรับรองแทนใบเสร็จรับเงิน-${d.docNo || 'form'}.xlsx`);
-}
-
-document.getElementById('wordBtn').addEventListener('click', generateWordDoc);
-document.getElementById('excelBtn').addEventListener('click', generateExcelDoc);
-// 🔥 เริ่มต้นหน้าเว็บ
-const saved = localStorage.getItem('receiptForm');
-if (saved) {
-  const d = JSON.parse(saved);
-
-  document.getElementById('saveLocalChk').checked = true;
-
-  document.getElementById('buyerName').value = d.buyerName || '';
-  document.getElementById('buyerType').value = d.buyerType || '';
-  document.getElementById('taxId').value = d.taxId || '';
-  document.getElementById('addressName').value = d.addressName || '';
-  document.getElementById('payerName').value = d.payerName || '';
-  document.getElementById('payerPosition').value = d.payerPosition || '';
-  document.getElementById('approverName').value = d.approverName || '';
-
-  if (d.logo) document.getElementById('p_logo').src = d.logo;
-
-  itemRowsEl.innerHTML = '';
-  d.items.forEach(it => addItemRow(it.desc, it.date, it.amt, it.notes));
-
-  if (d.docDate) {
-    document.getElementById('docDate').value = d.docDate;
-  } else {
-    document.getElementById('docDate').valueAsDate = new Date();
-  }
-  renderDoc();
-} else {
-  // ไม่มีข้อมูล → ตั้งค่าเริ่มต้น
-  addItemRow();
-  document.getElementById('docDate').valueAsDate = new Date();
-  renderDoc();
-}
-
-
 </script>
+
 <script src="https://cdn.jsdelivr.net/npm/docx@8.5/build/index.umd.min.js"></script>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-</body>
 
+<script>
+  // ----- รวมข้อมูลจากฟอร์ม (ใช้ร่วมกันทั้ง Word / Excel) -----
+  function collectData() {
+    const rows = [...itemRowsEl.querySelectorAll('.item-row')];
+    const items = rows.map(row => ({
+      desc: row.querySelector('.item-desc').value || '-',
+      amt: parseFloat(row.querySelector('.item-amt').value) || 0,
+    }));
+    const total = items.reduce((sum, it) => sum + it.amt, 0);
+    return {
+      docNo: document.getElementById('docNo').value,
+      dateText: formatDateThai(document.getElementById('docDate').value),
+      payeeName: document.getElementById('payeeName').value,
+      payeeTaxId: document.getElementById('payeeTaxId').value,
+      payeeAddress: document.getElementById('payeeAddress').value,
+      payerName: document.getElementById('payerName').value,
+      payerAddress: document.getElementById('payerAddress').value,
+      payerTaxId: document.getElementById('payerTaxId').value,
+      items, total, totalText: bahtText(total),
+    };
+  }
+
+  function downloadBlob(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  // ----- ดาวน์โหลดเป็น Word (.docx) -----
+  async function generateWordDoc() {
+    const { Document, Packer, Paragraph, TextRun, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle } = docx;
+    const d = collectData();
+
+    const cellBorder = { top:{style:BorderStyle.SINGLE,size:2,color:"999999"}, bottom:{style:BorderStyle.SINGLE,size:2,color:"999999"}, left:{style:BorderStyle.SINGLE,size:2,color:"999999"}, right:{style:BorderStyle.SINGLE,size:2,color:"999999"} };
+    function cell(text, opts = {}) {
+      return new TableCell({
+        borders: cellBorder,
+        width: opts.width ? { size: opts.width, type: WidthType.PERCENTAGE } : undefined,
+        children: [new Paragraph({ alignment: opts.align || AlignmentType.LEFT, children: [new TextRun({ text: String(text), bold: !!opts.bold })] })],
+      });
+    }
+
+    const itemRowsDocx = d.items.map((it, i) => new TableRow({
+      children: [
+        cell(i + 1, { width: 10, align: AlignmentType.CENTER }),
+        cell(it.desc, { width: 60 }),
+        cell(it.amt.toLocaleString('th-TH', {minimumFractionDigits:2}), { width: 30, align: AlignmentType.RIGHT }),
+      ],
+    }));
+
+    const table = new Table({
+      width: { size: 100, type: WidthType.PERCENTAGE },
+      rows: [
+        new TableRow({ children: [
+          cell("ลำดับ", { width:10, bold:true, align:AlignmentType.CENTER }),
+          cell("รายการ", { width:60, bold:true }),
+          cell("จำนวนเงิน (บาท)", { width:30, bold:true, align:AlignmentType.RIGHT }),
+        ]}),
+        ...itemRowsDocx,
+        new TableRow({ children: [
+          cell("", { width:10 }),
+          cell("รวมเป็นเงิน", { width:60, bold:true, align:AlignmentType.RIGHT }),
+          cell(d.total.toLocaleString('th-TH', {minimumFractionDigits:2}), { width:30, bold:true, align:AlignmentType.RIGHT }),
+        ]}),
+      ],
+    });
+
+    const noBorder = { style: BorderStyle.NONE, size: 0, color: "FFFFFF" };
+    const headerTable = new Table({
+      width: { size: 100, type: WidthType.PERCENTAGE },
+      borders: { top:noBorder, bottom:noBorder, left:noBorder, right:noBorder, insideHorizontal:noBorder, insideVertical:noBorder },
+      rows: [ new TableRow({ children: [
+        new TableCell({
+          width: { size: 60, type: WidthType.PERCENTAGE },
+          borders: { top:noBorder, bottom:noBorder, left:noBorder, right:noBorder },
+          children: [
+            new Paragraph({ children: [new TextRun({ text:"ใบสำคัญรับเงิน", bold:true, size:32 })] }),
+            new Paragraph({ children: [new TextRun({ text:"Receipt Voucher", size:20, color:"555555" })] }),
+          ],
+        }),
+        new TableCell({
+          width: { size: 40, type: WidthType.PERCENTAGE },
+          borders: { top:noBorder, bottom:noBorder, left:noBorder, right:noBorder },
+          children: [
+            new Paragraph({ alignment: AlignmentType.RIGHT, children: [new TextRun({ text:`เลขที่ ${d.docNo || '-'}`, bold:true, size:22 })] }),
+            new Paragraph({ alignment: AlignmentType.RIGHT, children: [new TextRun({ text:`วันที่ ${d.dateText}`, size:22 })] }),
+          ],
+        }),
+      ]})],
+    });
+
+    const doc = new Document({
+      sections: [{
+        children: [
+          headerTable,
+          new Paragraph({ spacing:{before:120, after:260}, border:{ bottom:{ style:BorderStyle.SINGLE, size:12, color:"333333" } }, children:[new TextRun("")] }),
+
+          new Paragraph({ spacing:{after:60}, children: [new TextRun({ text:"ข้าพเจ้า (ผู้ขายสินค้า / ให้บริการ)", bold:true })] }),
+          new Paragraph({ spacing:{after:40}, children: [new TextRun(`ชื่อ: ${d.payeeName || '-'}`)] }),
+          new Paragraph({ spacing:{after:40}, children: [new TextRun(`เลขประจำตัวผู้เสียภาษี/เลขบัตรประชาชน: ${d.payeeTaxId || '-'}`)] }),
+          new Paragraph({ spacing:{after:220}, children: [new TextRun(`ที่อยู่: ${d.payeeAddress || '-'}`)] }),
+
+          new Paragraph({ spacing:{after:60}, children: [new TextRun({ text:"ได้รับเงินจาก (ผู้ซื้อ / ผู้รับบริการ)", bold:true })] }),
+          new Paragraph({ spacing:{after:40}, children: [new TextRun(`ชื่อ: ${d.payerName || '-'}`)] }),
+          new Paragraph({ spacing:{after:40}, children: [new TextRun(`ที่อยู่: ${d.payerAddress || '-'}`)] }),
+          new Paragraph({ spacing:{after:260}, children: [new TextRun(`เลขประจำตัวผู้เสียภาษี: ${d.payerTaxId || '-'}`)] }),
+
+          table,
+
+          new Paragraph({ spacing:{before:200, after:400}, children: [new TextRun(`ตัวอักษร: ${d.totalText}`)] }),
+
+          new Paragraph({ spacing:{before:600}, children: [new TextRun(`ลงชื่อ ........................................ ผู้รับเงิน (${d.payeeName || '...................'})`)] }),
+          new Paragraph({ spacing:{before:400}, children: [new TextRun("ลงชื่อ ........................................ ผู้จ่ายเงิน / ผู้อนุมัติ")] }),
+        ],
+      }],
+    });
+
+    const blob = await Packer.toBlob(doc);
+    downloadBlob(blob, `ใบสำคัญรับเงิน-${d.docNo || 'form'}.docx`);
+  }
+
+  // ----- ดาวน์โหลดเป็น Excel (.xlsx) -----
+  function generateExcelDoc() {
+    const d = collectData();
+    const rows = [
+      ["ใบสำคัญรับเงิน", "", "", `เลขที่ ${d.docNo || '-'}`],
+      ["Receipt Voucher", "", "", `วันที่ ${d.dateText}`],
+      [],
+      ["ข้าพเจ้า (ผู้ขายสินค้า / ให้บริการ)"],
+      ["ชื่อ", d.payeeName || "-"],
+      ["เลขประจำตัวผู้เสียภาษี/เลขบัตรประชาชน", d.payeeTaxId || "-"],
+      ["ที่อยู่", d.payeeAddress || "-"],
+      [],
+      ["ได้รับเงินจาก (ผู้ซื้อ / ผู้รับบริการ)"],
+      ["ชื่อ", d.payerName || "-"],
+      ["ที่อยู่", d.payerAddress || "-"],
+      ["เลขประจำตัวผู้เสียภาษี", d.payerTaxId || "-"],
+      [],
+      ["ลำดับ", "รายการ", "จำนวนเงิน (บาท)"],
+      ...d.items.map((it, i) => [i + 1, it.desc, it.amt]),
+      ["", "รวมเป็นเงิน", d.total],
+      [],
+      ["ตัวอักษร", d.totalText],
+      [], [],
+      [`ลงชื่อ .......................... ผู้รับเงิน (${d.payeeName || '...'})`],
+      [],
+      ["ลงชื่อ .......................... ผู้จ่ายเงิน / ผู้อนุมัติ"],
+    ];
+    const ws = XLSX.utils.aoa_to_sheet(rows);
+    ws['!cols'] = [{ wch:14 }, { wch:40 }, { wch:18 }, { wch:20 }];
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "ใบสำคัญรับเงิน");
+    XLSX.writeFile(wb, `ใบสำคัญรับเงิน-${d.docNo || 'form'}.xlsx`);
+  }
+
+  document.getElementById('wordBtn').addEventListener('click', generateWordDoc);
+  document.getElementById('excelBtn').addEventListener('click', generateExcelDoc);
+</script>
+
+</body>
 </html>
